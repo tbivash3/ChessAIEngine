@@ -1,4 +1,4 @@
-import { Piece } from "./piece";
+import { Piece } from "./model/piece";
 
 export class WhiteRook implements Piece {
     unicode = "\u2656";

@@ -1,4 +1,4 @@
-import { Piece } from "./piece";
+import { Piece } from "./model/piece";
 
 export class WhiteBishop implements Piece {
     unicode = "\u2657";

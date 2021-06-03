@@ -1,4 +1,4 @@
-import { Piece } from "./piece";
+import { Piece } from "./model/piece";
 
 export class BlackKnight implements Piece {
     unicode = "\u265E";

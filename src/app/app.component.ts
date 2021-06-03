@@ -5,7 +5,7 @@ import { BlackKnight } from './Pieces/black.knight';
 import { BlackPawn } from './Pieces/black.pawn';
 import { BlackQueen } from './Pieces/black.queen';
 import { BlackRook } from './Pieces/black.rook';
-import { Piece } from './Pieces/piece';
+import { Piece } from './Pieces/model/piece';
 import { WhiteBishop } from './Pieces/white.bishop';
 import { WhiteKing } from './Pieces/white.king';
 import { WhiteKnight } from './Pieces/white.knight';
