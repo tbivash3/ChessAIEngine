@@ -1,0 +1,12 @@
+#board {
+    width: 816px;
+    border: 5px solid black;
+    margin: auto;
+    margin-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.box {
+    border: 1px solid black;
+}
