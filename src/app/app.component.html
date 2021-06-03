@@ -2,6 +2,7 @@
   <ng-container *ngFor="let i of numOfBoxes">
     <div id="{{ 'box' + i }}" class="box" [style.height.px]="boxSize" [style.width.px]="boxSize"
       [style.backgroundColor]="getBackgroundColor(i)">
+      <span class="piece">{{getUnicodeValue(i)}}</span>
     </div>
   </ng-container>
 </div>

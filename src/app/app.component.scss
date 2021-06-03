@@ -1,6 +1,6 @@
 #board {
     width: 816px;
-    border: 5px solid black;
+    border: 1px solid black;
     margin: auto;
     margin-top: 50px;
     display: flex;
@@ -9,4 +9,10 @@
 
 .box {
     border: 1px solid black;
+    font-size: 80px;
+    text-align: center;
+}
+
+.piece {
+    z-index: 1;
 }
