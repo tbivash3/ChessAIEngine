@@ -10,9 +10,11 @@
 .box {
     border: 1px solid black;
     font-size: 80px;
+    width: 100px;
+    height: 100px;
     text-align: center;
 }
 
 .piece {
-    z-index: 1;
+   cursor: pointer;
 }

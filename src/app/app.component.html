@@ -1,8 +1,9 @@
 <div id="board" #board>
   <ng-container *ngFor="let i of numOfBoxes">
-    <div cdkDrag id="{{ 'box' + i }}" class="box" [style.height.px]="boxSize" [style.width.px]="boxSize"
-      [style.backgroundColor]="getBackgroundColor(i)">
-      <div cdkDrag cdkDragBoundary="#board" class="piece">{{getUnicodeValue(i)}}</div>
+    <div (drop)="drop($event)" (dragover)="allowDrop($event)" id="{{ 'box' + i }}" class="box"
+      [style.height.px]="boxSize" [style.width.px]="boxSize" [style.backgroundColor]="getBackgroundColor(i)">
+      <span id="{{ 'piece' + i }}" draggable="true" (dragstart)="dragStart($event)" (drag)="dragging($event)"
+        class="piece">{{getUnicodeValue(i)}}</span>
     </div>
   </ng-container>
 </div>

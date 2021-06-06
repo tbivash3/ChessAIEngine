@@ -1,3 +1,4 @@
+import { CdkDrag, CdkDragDrop, CdkDragEnd, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { BoardUtil } from './utility/board.util';
 
@@ -7,7 +8,6 @@ import { BoardUtil } from './utility/board.util';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, AfterViewInit {
-
   COLOR_WHITE = 'white';
 
   COLOR_BLACK = 'black';
@@ -47,6 +47,25 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     return color;
+  }
+
+  dragStart(event: any) {
+    console.log(event.target.id);
+    event.dataTransfer.setData("Text", event.target.id);
+  }
+
+  dragging(event: any) {
+
+  }
+
+  drop(event: any) {
+    event.preventDefault();
+    var data = event.dataTransfer.getData("Text");
+    event.target.appendChild(document.getElementById(data));
+  }
+
+  allowDrop(event: any) {
+    event.preventDefault();
   }
 
   getUnicodeValue(index: number) {
