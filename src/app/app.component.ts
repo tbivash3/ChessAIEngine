@@ -50,8 +50,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   dragStart(event: any) {
-    console.log(event.target.id);
-    event.dataTransfer.setData("Text", event.target.id);
+    event.dataTransfer.setData("piece", event.target.id);
   }
 
   dragging(event: any) {
@@ -60,7 +59,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   drop(event: any) {
     event.preventDefault();
-    var data = event.dataTransfer.getData("Text");
+    var data = event.dataTransfer.getData("piece");
+    event.target.innerHTML = '';
     event.target.appendChild(document.getElementById(data));
   }
 
