@@ -1,8 +1,8 @@
 <div id="board" #board>
   <ng-container *ngFor="let i of numOfBoxes">
-    <div id="{{ 'box' + i }}" class="box" [style.height.px]="boxSize" [style.width.px]="boxSize"
+    <div cdkDrag id="{{ 'box' + i }}" class="box" [style.height.px]="boxSize" [style.width.px]="boxSize"
       [style.backgroundColor]="getBackgroundColor(i)">
-      <span class="piece">{{getUnicodeValue(i)}}</span>
+      <div cdkDrag cdkDragBoundary="#board" class="piece">{{getUnicodeValue(i)}}</div>
     </div>
   </ng-container>
 </div>

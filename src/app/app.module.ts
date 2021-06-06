@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BoardUtil } from './utility/board.util';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -11,7 +13,9 @@ import { BoardUtil } from './utility/board.util';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    DragDropModule,
+    NoopAnimationsModule
   ],
   providers: [BoardUtil],
   bootstrap: [AppComponent]
