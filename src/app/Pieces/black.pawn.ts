@@ -1,5 +1,4 @@
 import { BoardUtil } from "../utility/board.util";
-import { Piece } from "./model/piece";
 
 export class BlackPawn {
 
@@ -7,11 +6,13 @@ export class BlackPawn {
 
     static unicode = "\u265F";
 
-    static getMoves(index: number, board: Map<number, string>) {
+    static getMoves(index: number, board: string[][]) {
 
         const row = BoardUtil.getRowNumber(index);
 
-        let moves: Set<number> = new Set();
+        console.log(row);
+
+        let moves: number[] = [];
 
         const frontMove = index + 8;
 
@@ -20,18 +21,18 @@ export class BlackPawn {
         const rightDiagonalMove = frontMove + 1;
 
         // check front move
-        if (board.get(frontMove) !== '') moves.add(frontMove);
+        if (board[frontMove][0] === '') moves.push(frontMove);
 
         //check left diagonal move
-        if (BoardUtil.getRowNumber(leftDiagonalMove) === row) moves.add(leftDiagonalMove);
+        if (BoardUtil.getRowNumber(leftDiagonalMove) === row + 1 && board[leftDiagonalMove][0] !== '' && board[leftDiagonalMove][1] !== 'B') moves.push(leftDiagonalMove);
 
         //check right diagonal move
-        if (BoardUtil.getRowNumber(rightDiagonalMove) === row) moves.add(rightDiagonalMove);
+        if (BoardUtil.getRowNumber(rightDiagonalMove) === row + 1 && board[rightDiagonalMove][0] !== '' && board[rightDiagonalMove][1] !== 'B') moves.push(rightDiagonalMove);
 
-        // check if first pawn move --- check front move for second position
+        // check if first row pawn move --- check front move for second position
         if (row === 1) {
             const secondFrontMove = frontMove + 8;
-            if (board.get(secondFrontMove) !== '') moves.add(frontMove);
+            if (board[secondFrontMove][0] === '') moves.push(secondFrontMove);
         }
 
         return moves;

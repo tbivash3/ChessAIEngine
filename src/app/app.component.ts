@@ -20,9 +20,9 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   initialBoardConfigurationMap: Map<number, string> = new Map();
 
-  boardConfiguration: string[] = [];
+  boardConfiguration: string[][] = [];
 
-  validMoves: Set<number> = new Set();
+  validMoves: number[] = [];
 
   constructor() { }
 
@@ -34,8 +34,16 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     this.initialBoardConfigurationMap = BoardUtil.getInitialBoardConfigurationMap();
 
-    for (let i = 0; i < 64; i++) {
-      this.boardConfiguration.push(this.initialBoardConfigurationMap.get(i) || '');
+    for (let i = 0; i < 16; i++) {
+      this.boardConfiguration.push([this.initialBoardConfigurationMap.get(i) || '', "B"]);
+    }
+
+    for (let i = 16; i < 48; i++) {
+      this.boardConfiguration.push([this.initialBoardConfigurationMap.get(i) || '', ""]);
+    }
+
+    for (let i = 48; i < 64; i++) {
+      this.boardConfiguration.push([this.initialBoardConfigurationMap.get(i) || '', "W"]);
     }
   }
 
@@ -58,9 +66,23 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   dragStart(event: any, index: number) {
-    this.validMoves = BlackPawn.getMoves(index, this.initialBoardConfigurationMap);
+    this.validMoves = this.getValidMoves(index);
 
+    this.addValidMovesBackgroundColor();
     event.dataTransfer.setData("source", index);
+  }
+
+  getValidMoves(index: number): number[] {
+
+    let moves: number[] = [];
+
+    let pieceInfo = this.boardConfiguration[index];
+
+    if (pieceInfo[0] === BlackPawn.unicode) {
+      moves = BlackPawn.getMoves(index, this.boardConfiguration);
+    }
+
+    return moves;
   }
 
   dragging(event: any) {
@@ -69,25 +91,56 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   drop(event: any, destinationIndex: number) {
 
+    this.removeValidMovesBackgroundColor();
+
     event.preventDefault();
 
-    const sourceIndex = event.dataTransfer.getData("source");
+    let isDestinationIndexValid = this.checkIfDestinationIndexIsValid(destinationIndex);
 
-    const currentSourceIndexValue = this.boardConfiguration[sourceIndex];
+    if (isDestinationIndexValid) {
 
-    const currentDestinationIndexValue = this.boardConfiguration[destinationIndex];
+      const sourceIndex = event.dataTransfer.getData("source");
 
-    this.boardConfiguration[destinationIndex] = currentSourceIndexValue;
+      const currentSourceIndexValue = this.boardConfiguration[sourceIndex];
 
-    this.boardConfiguration[sourceIndex] = currentDestinationIndexValue;
+      const currentDestinationIndexValue = this.boardConfiguration[destinationIndex];
+
+      this.boardConfiguration[destinationIndex] = currentSourceIndexValue;
+
+      this.boardConfiguration[sourceIndex] = currentDestinationIndexValue;
+    }
+
+  }
+  checkIfDestinationIndexIsValid(destinationIndex: number): boolean {
+
+    let isValid = false;
+
+    this.validMoves.forEach(index => {
+      if (index === destinationIndex) {
+        isValid = true;
+      }
+    })
+
+    return isValid;
+  }
+
+  addValidMovesBackgroundColor() {
+    this.validMoves.forEach(index => {
+
+      const id = 'box' + index;
+      document.getElementById(id)?.classList.add('validMove');
+
+    })
+  }
+
+  removeValidMovesBackgroundColor() {
+    this.validMoves.forEach(index => {
+      const id = 'box' + index;
+      document.getElementById(id)?.classList.remove('validMove');
+    })
   }
 
   allowDrop(event: any) {
     event.preventDefault();
   }
-
-  getUnicodeValue(index: number) {
-    return this.initialBoardConfigurationMap.get(index);
-  }
-
 }
