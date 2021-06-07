@@ -2,7 +2,7 @@ import { BoardUtil } from "../utility/board.util";
 
 export class BlackPawn {
 
-    constructor(private boardUtil: BoardUtil) { }
+    constructor() { }
 
     static unicode = "\u265F";
 

@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { BlackPawn } from './Pieces/black.pawn';
+import { WhitePawn } from './Pieces/white.pawn';
 import { BoardUtil } from './utility/board.util';
 
 @Component({
@@ -80,6 +81,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     if (pieceInfo[0] === BlackPawn.unicode) {
       moves = BlackPawn.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === WhitePawn.unicode) {
+      moves = WhitePawn.getMoves(index, this.boardConfiguration);
     }
 
     return moves;
@@ -103,11 +106,9 @@ export class AppComponent implements OnInit, AfterViewInit {
 
       const currentSourceIndexValue = this.boardConfiguration[sourceIndex];
 
-      const currentDestinationIndexValue = this.boardConfiguration[destinationIndex];
-
       this.boardConfiguration[destinationIndex] = currentSourceIndexValue;
 
-      this.boardConfiguration[sourceIndex] = currentDestinationIndexValue;
+      this.boardConfiguration[sourceIndex] = [];
     }
 
   }
