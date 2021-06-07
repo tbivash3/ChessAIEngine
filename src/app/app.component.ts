@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { BlackKnight } from './Pieces/black.knight';
 import { BlackPawn } from './Pieces/black.pawn';
 import { BlackRook } from './Pieces/black.rook';
+import { WhiteKnight } from './Pieces/white.knight';
 import { WhitePawn } from './Pieces/white.pawn';
 import { WhiteRook } from './Pieces/white.rook';
 import { BoardUtil } from './utility/board.util';
@@ -93,11 +95,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     } else if (pieceInfo[0] === WhiteRook.unicode) {
       moves = WhiteRook.getMoves(index, this.boardConfiguration);
 
-    } else if (pieceInfo[0] === WhitePawn.unicode) {
-      moves = WhitePawn.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === BlackKnight.unicode) {
+      moves = BlackKnight.getMoves(index, this.boardConfiguration);
 
-    } else if (pieceInfo[0] === WhitePawn.unicode) {
-      moves = WhitePawn.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === WhiteKnight.unicode) {
+      moves = WhiteKnight.getMoves(index, this.boardConfiguration);
 
     } else if (pieceInfo[0] === WhitePawn.unicode) {
       moves = WhitePawn.getMoves(index, this.boardConfiguration);
