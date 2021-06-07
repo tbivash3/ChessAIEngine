@@ -1,4 +1,4 @@
 export interface Piece {
     unicode: string,
-    getMoves(): number[],
+    getMoves(index: number, board: Map<number, string>): number[],
 }

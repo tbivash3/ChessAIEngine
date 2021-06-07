@@ -16,8 +16,14 @@ Injectable({ providedIn: 'root' })
 export class BoardUtil {
     constructor() { }
 
-    getInitialBoardConfigurationMap() {
+    static black_pawn_unicode = "\u265F";
+
+    static getInitialBoardConfigurationMap() {
         const board = new Map<number, string>();
+
+        for (let i = 0; i < 64; i++) {
+            board.set(i, '');
+        }
 
         board.set(0, new BlackRook().unicode);
         board.set(1, new BlackKnight().unicode);
@@ -28,14 +34,14 @@ export class BoardUtil {
         board.set(6, new BlackKnight().unicode);
         board.set(7, new BlackBishop().unicode);
 
-        board.set(8, new BlackPawn().unicode);
-        board.set(9, new BlackPawn().unicode);
-        board.set(10, new BlackPawn().unicode);
-        board.set(11, new BlackPawn().unicode);
-        board.set(12, new BlackPawn().unicode);
-        board.set(13, new BlackPawn().unicode);
-        board.set(14, new BlackPawn().unicode);
-        board.set(15, new BlackPawn().unicode);
+        board.set(8, BoardUtil.black_pawn_unicode);
+        board.set(9, BoardUtil.black_pawn_unicode);
+        board.set(10, BoardUtil.black_pawn_unicode);
+        board.set(11, BoardUtil.black_pawn_unicode);
+        board.set(12, BoardUtil.black_pawn_unicode);
+        board.set(13, BoardUtil.black_pawn_unicode);
+        board.set(14, BoardUtil.black_pawn_unicode);
+        board.set(15, BoardUtil.black_pawn_unicode);
 
         board.set(48, new WhitePawn().unicode);
         board.set(49, new WhitePawn().unicode);
@@ -56,5 +62,13 @@ export class BoardUtil {
         board.set(63, new WhiteBishop().unicode);
 
         return board;
+    }
+
+    static getRowNumber(index: number) {
+        return Math.floor(index / 8);
+    }
+
+    static getColumnNumber(index: number) {
+        return index % 8;
     }
 }

@@ -1,5 +1,5 @@
-import { CdkDrag, CdkDragDrop, CdkDragEnd, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { BlackPawn } from './Pieces/black.pawn';
 import { BoardUtil } from './utility/board.util';
 
 @Component({
@@ -18,9 +18,13 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   numOfBoxes: number[] = [];
 
-  initialBoardConfigurationMap!: Map<number, string>;
+  initialBoardConfigurationMap: Map<number, string> = new Map();
 
-  constructor(private boardUtil: BoardUtil) { }
+  boardConfiguration: string[] = [];
+
+  validMoves: Set<number> = new Set();
+
+  constructor() { }
 
   @ViewChild('board')
   board!: ElementRef;
@@ -28,7 +32,11 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.numOfBoxes = Array.from(Array(64).keys())
 
-    this.initialBoardConfigurationMap = this.boardUtil.getInitialBoardConfigurationMap();
+    this.initialBoardConfigurationMap = BoardUtil.getInitialBoardConfigurationMap();
+
+    for (let i = 0; i < 64; i++) {
+      this.boardConfiguration.push(this.initialBoardConfigurationMap.get(i) || '');
+    }
   }
 
   ngAfterViewInit(): void {
@@ -39,8 +47,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     let color = 'white';
 
-    const row = Math.floor(index / 8);
-    const column = index % 8;
+    const row = BoardUtil.getRowNumber(index);
+    const column = BoardUtil.getColumnNumber(index);
 
     if ((row + column) % 2 === 0) {
       color = 'gray';
@@ -49,19 +57,29 @@ export class AppComponent implements OnInit, AfterViewInit {
     return color;
   }
 
-  dragStart(event: any) {
-    event.dataTransfer.setData("piece", event.target.id);
+  dragStart(event: any, index: number) {
+    this.validMoves = BlackPawn.getMoves(index, this.initialBoardConfigurationMap);
+
+    event.dataTransfer.setData("source", index);
   }
 
   dragging(event: any) {
 
   }
 
-  drop(event: any) {
+  drop(event: any, destinationIndex: number) {
+
     event.preventDefault();
-    var data = event.dataTransfer.getData("piece");
-    event.target.innerHTML = '';
-    event.target.appendChild(document.getElementById(data));
+
+    const sourceIndex = event.dataTransfer.getData("source");
+
+    const currentSourceIndexValue = this.boardConfiguration[sourceIndex];
+
+    const currentDestinationIndexValue = this.boardConfiguration[destinationIndex];
+
+    this.boardConfiguration[destinationIndex] = currentSourceIndexValue;
+
+    this.boardConfiguration[sourceIndex] = currentDestinationIndexValue;
   }
 
   allowDrop(event: any) {
