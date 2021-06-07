@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Bishop } from './Pieces/bishop';
 import { BlackBishop } from './Pieces/black.bishop';
 import { BlackKnight } from './Pieces/black.knight';
 import { BlackRook } from './Pieces/black.rook';
@@ -106,11 +107,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     } else if (pieceInfo[0] === BlackBishop.unicode) {
       moves = BlackBishop.getMoves(index, this.boardConfiguration);
 
-    } else if (pieceInfo[0] === WhiteBishop.unicode) {
-      moves = WhiteBishop.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === Bishop.whiteBishopUnicode) {
+      moves = Bishop.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
 
-    } else if (pieceInfo[0] === WhiteBishop.unicode) {
-      moves = WhiteBishop.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === Bishop.blackBishopUnicode) {
+      moves = Bishop.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_BLACK);
 
     } else if (pieceInfo[0] === WhiteBishop.unicode) {
       moves = WhiteBishop.getMoves(index, this.boardConfiguration);
