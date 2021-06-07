@@ -1,9 +1,8 @@
-import { Piece } from "./model/piece";
 
-export class WhiteKnight implements Piece {
-    unicode = "\u2658";
+export class WhiteKnight {
+    static unicode = "\u2658";
 
-    getMoves(): number[] {
+    static getMoves(): number[] {
         return [];
     }
 

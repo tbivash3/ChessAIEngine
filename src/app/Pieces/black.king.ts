@@ -1,9 +1,8 @@
-import { Piece } from "./model/piece";
 
-export class BlackKing implements Piece {
-    unicode = "\u265A";
+export class BlackKing {
+    static unicode = "\u265A";
 
-    getMoves(): number[] {
+    static getMoves(): number[] {
         return [];
     }
 

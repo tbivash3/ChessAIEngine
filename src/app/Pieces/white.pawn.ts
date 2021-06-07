@@ -1,9 +1,7 @@
-import { Piece } from "./model/piece";
+export class WhitePawn {
+    static unicode = "\u2659";
 
-export class WhitePawn implements Piece {
-    unicode = "\u2659";
-
-    getMoves(): number[] {
+    static getMoves(): number[] {
         return [];
     }
 

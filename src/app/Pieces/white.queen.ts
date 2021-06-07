@@ -1,9 +1,7 @@
-import { Piece } from "./model/piece";
+export class WhiteQueen {
+    static unicode = "\u2655";
 
-export class WhiteQueen implements Piece {
-    unicode = "\u2655";
-
-    getMoves(): number[] {
+    static getMoves(): number[] {
         return [];
     }
 

@@ -1,9 +1,7 @@
-import { Piece } from "./model/piece";
+export class BlackRook {
+    static unicode = "\u265C";
 
-export class BlackRook implements Piece {
-    public unicode = "\u265C";
-
-    public getMoves(): number[] {
+    static getMoves(): number[] {
         return [];
     }
 

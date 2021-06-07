@@ -1,9 +1,7 @@
-import { Piece } from "./model/piece";
+export class BlackBishop {
+    static unicode = "\u265D";
 
-export class BlackBishop implements Piece {
-    unicode = "\u265D";
-
-    getMoves(): number[] {
+    static getMoves(): number[] {
         return [];
     }
 
