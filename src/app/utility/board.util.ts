@@ -2,21 +2,18 @@ import { Injectable } from "@angular/core";
 import { BlackBishop } from "../Pieces/black.bishop";
 import { BlackKing } from "../Pieces/black.king";
 import { BlackKnight } from "../Pieces/black.knight";
-import { BlackPawn } from "../Pieces/black.pawn";
 import { BlackQueen } from "../Pieces/black.queen";
 import { BlackRook } from "../Pieces/black.rook";
+import { Pawn } from "../Pieces/pawn";
 import { WhiteBishop } from "../Pieces/white.bishop";
 import { WhiteKing } from "../Pieces/white.king";
 import { WhiteKnight } from "../Pieces/white.knight";
-import { WhitePawn } from "../Pieces/white.pawn";
 import { WhiteQueen } from "../Pieces/white.queen";
 import { WhiteRook } from "../Pieces/white.rook";
 
 Injectable({ providedIn: 'root' })
 export class BoardUtil {
     constructor() { }
-
-    static black_pawn_unicode = "\u265F";
 
     static getInitialBoardConfigurationMap() {
         const board = new Map<number, string>();
@@ -34,23 +31,23 @@ export class BoardUtil {
         board.set(6, BlackKnight.unicode);
         board.set(7, BlackBishop.unicode);
 
-        board.set(8, BoardUtil.black_pawn_unicode);
-        board.set(9, BoardUtil.black_pawn_unicode);
-        board.set(10, BoardUtil.black_pawn_unicode);
-        board.set(11, BoardUtil.black_pawn_unicode);
-        board.set(12, BoardUtil.black_pawn_unicode);
-        board.set(13, BoardUtil.black_pawn_unicode);
-        board.set(14, BoardUtil.black_pawn_unicode);
-        board.set(15, BoardUtil.black_pawn_unicode);
+        board.set(8, Pawn.blackPawnUnicode);
+        board.set(9, Pawn.blackPawnUnicode);
+        board.set(10, Pawn.blackPawnUnicode);
+        board.set(11, Pawn.blackPawnUnicode);
+        board.set(12, Pawn.blackPawnUnicode);
+        board.set(13, Pawn.blackPawnUnicode);
+        board.set(14, Pawn.blackPawnUnicode);
+        board.set(15, Pawn.blackPawnUnicode);
 
-        board.set(48, WhitePawn.unicode);
-        board.set(49, WhitePawn.unicode);
-        board.set(50, WhitePawn.unicode);
-        board.set(51, WhitePawn.unicode);
-        board.set(52, WhitePawn.unicode);
-        board.set(53, WhitePawn.unicode);
-        board.set(54, WhitePawn.unicode);
-        board.set(55, WhitePawn.unicode);
+        board.set(48, Pawn.whitePawnUnicode);
+        board.set(49, Pawn.whitePawnUnicode);
+        board.set(50, Pawn.whitePawnUnicode);
+        board.set(51, Pawn.whitePawnUnicode);
+        board.set(52, Pawn.whitePawnUnicode);
+        board.set(53, Pawn.whitePawnUnicode);
+        board.set(54, Pawn.whitePawnUnicode);
+        board.set(55, Pawn.whitePawnUnicode);
 
         board.set(56, WhiteRook.unicode);
         board.set(57, WhiteKnight.unicode);

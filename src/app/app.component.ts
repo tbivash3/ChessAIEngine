@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { BlackBishop } from './Pieces/black.bishop';
 import { BlackKnight } from './Pieces/black.knight';
-import { BlackPawn } from './Pieces/black.pawn';
 import { BlackRook } from './Pieces/black.rook';
+import { Pawn } from './Pieces/pawn';
+import { WhiteBishop } from './Pieces/white.bishop';
 import { WhiteKnight } from './Pieces/white.knight';
-import { WhitePawn } from './Pieces/white.pawn';
 import { WhiteRook } from './Pieces/white.rook';
 import { BoardUtil } from './utility/board.util';
 
@@ -13,9 +14,10 @@ import { BoardUtil } from './utility/board.util';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  COLOR_WHITE = 'white';
 
-  COLOR_BLACK = 'black';
+  PIECE_COLOR_BLACK = 'B';
+
+  PIECE_COLOR_WHITE = 'W';
 
   title = 'ChessAIEngine';
 
@@ -83,11 +85,11 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     let pieceInfo = this.boardConfiguration[index];
 
-    if (pieceInfo[0] === BlackPawn.unicode) {
-      moves = BlackPawn.getMoves(index, this.boardConfiguration);
+    if (pieceInfo[0] === Pawn.blackPawnUnicode) {
+      moves = Pawn.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_BLACK);
 
-    } else if (pieceInfo[0] === WhitePawn.unicode) {
-      moves = WhitePawn.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === Pawn.whitePawnUnicode) {
+      moves = Pawn.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
 
     } else if (pieceInfo[0] === BlackRook.unicode) {
       moves = BlackRook.getMoves(index, this.boardConfiguration);
@@ -101,23 +103,22 @@ export class AppComponent implements OnInit, AfterViewInit {
     } else if (pieceInfo[0] === WhiteKnight.unicode) {
       moves = WhiteKnight.getMoves(index, this.boardConfiguration);
 
-    } else if (pieceInfo[0] === WhitePawn.unicode) {
-      moves = WhitePawn.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === BlackBishop.unicode) {
+      moves = BlackBishop.getMoves(index, this.boardConfiguration);
 
-    } else if (pieceInfo[0] === WhitePawn.unicode) {
-      moves = WhitePawn.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === WhiteBishop.unicode) {
+      moves = WhiteBishop.getMoves(index, this.boardConfiguration);
 
-    } else if (pieceInfo[0] === WhitePawn.unicode) {
-      moves = WhitePawn.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === WhiteBishop.unicode) {
+      moves = WhiteBishop.getMoves(index, this.boardConfiguration);
 
-    } else if (pieceInfo[0] === WhitePawn.unicode) {
-      moves = WhitePawn.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === WhiteBishop.unicode) {
+      moves = WhiteBishop.getMoves(index, this.boardConfiguration);
 
-    } else if (pieceInfo[0] === WhitePawn.unicode) {
-      moves = WhitePawn.getMoves(index, this.boardConfiguration);
-
-    } else if (pieceInfo[0] === WhitePawn.unicode) {
-      moves = WhitePawn.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === WhiteBishop.unicode) {
+      moves = WhiteBishop.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === WhiteBishop.unicode) {
+      moves = WhiteBishop.getMoves(index, this.boardConfiguration);
     }
 
     return moves;
