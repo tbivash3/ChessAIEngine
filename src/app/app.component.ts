@@ -1,12 +1,9 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Bishop } from './Pieces/bishop';
-import { BlackBishop } from './Pieces/black.bishop';
-import { BlackKnight } from './Pieces/black.knight';
-import { BlackRook } from './Pieces/black.rook';
+import { Knight } from './Pieces/knight';
 import { Pawn } from './Pieces/pawn';
-import { WhiteBishop } from './Pieces/white.bishop';
-import { WhiteKnight } from './Pieces/white.knight';
-import { WhiteRook } from './Pieces/white.rook';
+import { Queen } from './Pieces/Queen';
+import { Rook } from './Pieces/Rook';
 import { BoardUtil } from './utility/board.util';
 
 @Component({
@@ -92,20 +89,18 @@ export class AppComponent implements OnInit, AfterViewInit {
     } else if (pieceInfo[0] === Pawn.whitePawnUnicode) {
       moves = Pawn.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
 
-    } else if (pieceInfo[0] === BlackRook.unicode) {
-      moves = BlackRook.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === Rook.blackRookUnicode) {
+      moves = Rook.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_BLACK);
 
-    } else if (pieceInfo[0] === WhiteRook.unicode) {
-      moves = WhiteRook.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === Rook.whiteRookUnicode) {
+      moves = Rook.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
 
-    } else if (pieceInfo[0] === BlackKnight.unicode) {
-      moves = BlackKnight.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === Knight.blackKnightUnicode) {
+      moves = Knight.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_BLACK);
 
-    } else if (pieceInfo[0] === WhiteKnight.unicode) {
-      moves = WhiteKnight.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === Knight.whiteKnightUnicode) {
+      moves = Knight.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
 
-    } else if (pieceInfo[0] === BlackBishop.unicode) {
-      moves = BlackBishop.getMoves(index, this.boardConfiguration);
 
     } else if (pieceInfo[0] === Bishop.whiteBishopUnicode) {
       moves = Bishop.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
@@ -113,14 +108,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     } else if (pieceInfo[0] === Bishop.blackBishopUnicode) {
       moves = Bishop.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_BLACK);
 
-    } else if (pieceInfo[0] === WhiteBishop.unicode) {
-      moves = WhiteBishop.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === Queen.blackQueenUnicode) {
+      moves = Queen.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_BLACK);
 
-    } else if (pieceInfo[0] === WhiteBishop.unicode) {
-      moves = WhiteBishop.getMoves(index, this.boardConfiguration);
-    } else if (pieceInfo[0] === WhiteBishop.unicode) {
-      moves = WhiteBishop.getMoves(index, this.boardConfiguration);
+    } else if (pieceInfo[0] === Queen.whiteQueenUnicode) {
+      moves = Queen.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
     }
+
 
     return moves;
   }

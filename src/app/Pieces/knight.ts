@@ -1,11 +1,13 @@
 import { BoardUtil } from "../utility/board.util";
 
-export class BlackKnight {
-    static unicode = "\u265E";
+export class Knight {
+    static blackKnightUnicode = "\u265E";
+
+    static whiteKnightUnicode = "\u2658";
 
     static relativeMovesPair = [[1, 2], [2, 1], [1, -2], [2, -1], [-1, 2], [-1, -2], [-2, 1], [-2, -1]];
 
-    static getMoves(index: number, board: string[][]): number[] {
+    static getMoves(index: number, board: string[][], knightType: string): number[] {
 
         let moves: number[] = [];
 
@@ -17,7 +19,7 @@ export class BlackKnight {
 
         let tempColumn = 0;
 
-        BlackKnight.relativeMovesPair.forEach(move => {
+        Knight.relativeMovesPair.forEach(move => {
 
             tempRow = row + move[0];
             tempColumn = column + move[1];
@@ -26,13 +28,11 @@ export class BlackKnight {
 
                 const validMovePosition = index + (8 * move[0]) + move[1];
 
-                if (board[validMovePosition][0] === '' || board[validMovePosition][1] === 'W')
+                if (board[validMovePosition][0] === '' || board[validMovePosition][1] !== knightType)
                     moves.push(validMovePosition);
             }
 
         })
-
-        console.log(moves);
 
         return moves;
 

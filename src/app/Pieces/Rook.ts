@@ -1,9 +1,11 @@
 import { BoardUtil } from "../utility/board.util";
 
-export class BlackRook {
-    static unicode = "\u265C";
+export class Rook {
+    static blackRookUnicode = "\u265C";
 
-    static getMoves(index: number, board: string[][]): number[] {
+    static whiteRookUnicode = "\u2656";
+
+    static getMoves(index: number, board: string[][], rookType: string): number[] {
         let moves: number[] = [];
 
 
@@ -19,7 +21,7 @@ export class BlackRook {
 
             if (board[tempPosition][0] === '') {
                 moves.push(tempPosition);
-            } else if (board[tempPosition][1] === 'W') {
+            } else if (board[tempPosition][1] !== rookType) {
                 moves.push(tempPosition);
                 break;
             } else {
@@ -34,7 +36,7 @@ export class BlackRook {
 
             if (board[tempPosition][0] === '') {
                 moves.push(tempPosition);
-            } else if (board[tempPosition][1] === 'W') {
+            } else if (board[tempPosition][1] !== rookType) {
                 moves.push(tempPosition);
                 break;
             } else {
@@ -49,7 +51,7 @@ export class BlackRook {
 
             if (board[tempPosition][0] === '') {
                 moves.push(tempPosition);
-            } else if (board[tempPosition][1] === 'W') {
+            } else if (board[tempPosition][1] !== rookType) {
                 moves.push(tempPosition);
                 break;
             } else {
@@ -64,7 +66,7 @@ export class BlackRook {
 
             if (board[tempPosition][0] === '') {
                 moves.push(tempPosition);
-            } else if (board[tempPosition][1] === 'W') {
+            } else if (board[tempPosition][1] !== rookType) {
                 moves.push(tempPosition);
                 break;
             } else {

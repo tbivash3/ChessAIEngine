@@ -1,15 +1,13 @@
 import { Injectable } from "@angular/core";
-import { BlackBishop } from "../Pieces/black.bishop";
+import { Bishop } from "../Pieces/bishop";
 import { BlackKing } from "../Pieces/black.king";
-import { BlackKnight } from "../Pieces/black.knight";
 import { BlackQueen } from "../Pieces/black.queen";
-import { BlackRook } from "../Pieces/black.rook";
+import { Knight } from "../Pieces/knight";
 import { Pawn } from "../Pieces/pawn";
-import { WhiteBishop } from "../Pieces/white.bishop";
+import { Queen } from "../Pieces/Queen";
+import { Rook } from "../Pieces/Rook";
 import { WhiteKing } from "../Pieces/white.king";
-import { WhiteKnight } from "../Pieces/white.knight";
 import { WhiteQueen } from "../Pieces/white.queen";
-import { WhiteRook } from "../Pieces/white.rook";
 
 Injectable({ providedIn: 'root' })
 export class BoardUtil {
@@ -22,14 +20,14 @@ export class BoardUtil {
             board.set(i, '');
         }
 
-        board.set(0, BlackRook.unicode);
-        board.set(1, BlackKnight.unicode);
-        board.set(2, BlackBishop.unicode);
-        board.set(3, BlackQueen.unicode);
+        board.set(0, Rook.blackRookUnicode);
+        board.set(1, Knight.blackKnightUnicode);
+        board.set(2, Bishop.blackBishopUnicode);
+        board.set(3, Queen.blackQueenUnicode);
         board.set(4, BlackKing.unicode);
-        board.set(5, BlackRook.unicode);
-        board.set(6, BlackKnight.unicode);
-        board.set(7, BlackBishop.unicode);
+        board.set(5, Rook.blackRookUnicode);
+        board.set(6, Knight.blackKnightUnicode);
+        board.set(7, Bishop.blackBishopUnicode);
 
         board.set(8, Pawn.blackPawnUnicode);
         board.set(9, Pawn.blackPawnUnicode);
@@ -49,14 +47,14 @@ export class BoardUtil {
         board.set(54, Pawn.whitePawnUnicode);
         board.set(55, Pawn.whitePawnUnicode);
 
-        board.set(56, WhiteRook.unicode);
-        board.set(57, WhiteKnight.unicode);
-        board.set(58, WhiteBishop.unicode);
-        board.set(59, WhiteQueen.unicode);
+        board.set(56, Rook.whiteRookUnicode);
+        board.set(57, Knight.whiteKnightUnicode);
+        board.set(58, Bishop.whiteBishopUnicode);
+        board.set(59, Queen.whiteQueenUnicode);
         board.set(60, WhiteKing.unicode);
-        board.set(61, WhiteRook.unicode);
-        board.set(62, WhiteKnight.unicode);
-        board.set(63, WhiteBishop.unicode);
+        board.set(61, Rook.whiteRookUnicode);
+        board.set(62, Knight.whiteKnightUnicode);
+        board.set(63, Bishop.whiteBishopUnicode);
 
         return board;
     }
