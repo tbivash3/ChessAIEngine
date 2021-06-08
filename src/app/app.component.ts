@@ -1,3 +1,4 @@
+import { ArrayDataSource } from '@angular/cdk/collections';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Bishop } from './Pieces/bishop';
 import { King } from './Pieces/King';
@@ -14,6 +15,22 @@ import { BoardUtil } from './utility/board.util';
 })
 export class AppComponent implements OnInit, AfterViewInit {
 
+  PIECE_BLACK_INDEX = 0;
+
+  PIECE_WHITE_INDEX = 1;
+
+  ROOK_START_INDEX = 0;
+
+  KNIGHT_START_INDEX = 2;
+
+  BISHOP_START_INDEX = 4;
+
+  KING_START_INDEX = 6;
+
+  QUEEN_START_INDEX = 7;
+
+  PAWN_START_INDEX = 8;
+
   PIECE_COLOR_BLACK = 'B';
 
   PIECE_COLOR_WHITE = 'W';
@@ -24,9 +41,15 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   numOfBoxes: number[] = [];
 
-  initialBoardConfigurationMap: Map<number, string> = new Map();
+  initialBoardConfigurationMap: Map<number, string[]> = new Map();
 
   boardConfiguration: string[][] = [];
+
+  blackDeadPiecesContainer = new Array<String>(16);
+
+  whiteDeadPiecesContainer = new Array<String>(16);
+
+  deadContainerIndex: number[][] = [];
 
   validMoves: number[] = [];
 
@@ -36,20 +59,25 @@ export class AppComponent implements OnInit, AfterViewInit {
   board!: ElementRef;
 
   ngOnInit(): void {
+
+    this.blackDeadPiecesContainer.fill('');
+
+    this.whiteDeadPiecesContainer.fill('');
+
     this.numOfBoxes = Array.from(Array(64).keys())
 
     this.initialBoardConfigurationMap = BoardUtil.getInitialBoardConfigurationMap();
 
     for (let i = 0; i < 16; i++) {
-      this.boardConfiguration.push([this.initialBoardConfigurationMap.get(i) || '', "B"]);
+      this.boardConfiguration.push([this.initialBoardConfigurationMap.get(i)?.[0] || '', "B", this.initialBoardConfigurationMap.get(i)?.[1] || '']);
     }
 
     for (let i = 16; i < 48; i++) {
-      this.boardConfiguration.push([this.initialBoardConfigurationMap.get(i) || '', ""]);
+      this.boardConfiguration.push([this.initialBoardConfigurationMap.get(i)?.[0] || '', "", this.initialBoardConfigurationMap.get(i)?.[1] || '']);
     }
 
     for (let i = 48; i < 64; i++) {
-      this.boardConfiguration.push([this.initialBoardConfigurationMap.get(i) || '', "W"]);
+      this.boardConfiguration.push([this.initialBoardConfigurationMap.get(i)?.[0] || '', "W", this.initialBoardConfigurationMap.get(i)?.[1] || '']);
     }
   }
 
@@ -142,12 +170,73 @@ export class AppComponent implements OnInit, AfterViewInit {
 
       const currentSourceIndexValue = this.boardConfiguration[sourceIndex];
 
+      const destinationIndexValue = this.boardConfiguration[destinationIndex];
+
+      if (destinationIndexValue[0] !== '') {
+        this.setDeadPieceContainerArray(destinationIndexValue);
+      }
+
       this.boardConfiguration[destinationIndex] = currentSourceIndexValue;
 
       this.boardConfiguration[sourceIndex] = ['', ''];
     }
 
   }
+  setDeadPieceContainerArray(piece: string[]) {
+
+    const color = piece[1];
+    const type = piece[2];
+    const unicode = piece[0];
+
+    let arr = this.blackDeadPiecesContainer;
+
+    if (color === this.PIECE_COLOR_WHITE) {
+      arr = this.whiteDeadPiecesContainer;
+    }
+
+    let index = this.getIndex(type);
+
+    console.log(index);
+
+    arr[index] = unicode;
+  }
+  getIndex(type: string) {
+
+    let index = -1;
+
+    switch (type) {
+
+      case "R":
+        index = this.ROOK_START_INDEX;
+        this.ROOK_START_INDEX += 1;
+        break;
+
+      case "K":
+        index = this.KNIGHT_START_INDEX;
+        this.KNIGHT_START_INDEX += 1;
+        break;
+
+      case "B":
+        index = this.BISHOP_START_INDEX;
+        this.BISHOP_START_INDEX += 1;
+        break;
+
+      case "KG":
+        index = this.KING_START_INDEX;
+        break;
+
+      case "Q":
+        index = this.QUEEN_START_INDEX;
+        break;
+
+      case "P":
+        index = this.PAWN_START_INDEX;
+        this.PAWN_START_INDEX += 1;
+        break;
+    }
+    return index;
+  }
+
   checkIfDestinationIndexIsValid(destinationIndex: number): boolean {
 
     let isValid = false;
