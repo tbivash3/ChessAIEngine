@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Bishop } from './Pieces/bishop';
+import { King } from './Pieces/King';
 import { Knight } from './Pieces/knight';
 import { Pawn } from './Pieces/pawn';
 import { Queen } from './Pieces/Queen';
@@ -101,7 +102,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     } else if (pieceInfo[0] === Knight.whiteKnightUnicode) {
       moves = Knight.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
 
-
     } else if (pieceInfo[0] === Bishop.whiteBishopUnicode) {
       moves = Bishop.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
 
@@ -113,8 +113,13 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     } else if (pieceInfo[0] === Queen.whiteQueenUnicode) {
       moves = Queen.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
-    }
 
+    } else if (pieceInfo[0] === King.whiteKingUnicode) {
+      moves = King.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
+
+    } else if (pieceInfo[0] === King.blackKingUnicode) {
+      moves = King.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_BLACK);
+    }
 
     return moves;
   }

@@ -1,13 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Bishop } from "../Pieces/bishop";
-import { BlackKing } from "../Pieces/black.king";
-import { BlackQueen } from "../Pieces/black.queen";
+import { King } from "../Pieces/King";
 import { Knight } from "../Pieces/knight";
 import { Pawn } from "../Pieces/pawn";
 import { Queen } from "../Pieces/Queen";
 import { Rook } from "../Pieces/Rook";
-import { WhiteKing } from "../Pieces/white.king";
-import { WhiteQueen } from "../Pieces/white.queen";
 
 Injectable({ providedIn: 'root' })
 export class BoardUtil {
@@ -24,7 +21,7 @@ export class BoardUtil {
         board.set(1, Knight.blackKnightUnicode);
         board.set(2, Bishop.blackBishopUnicode);
         board.set(3, Queen.blackQueenUnicode);
-        board.set(4, BlackKing.unicode);
+        board.set(4, King.blackKingUnicode);
         board.set(5, Rook.blackRookUnicode);
         board.set(6, Knight.blackKnightUnicode);
         board.set(7, Bishop.blackBishopUnicode);
@@ -51,7 +48,7 @@ export class BoardUtil {
         board.set(57, Knight.whiteKnightUnicode);
         board.set(58, Bishop.whiteBishopUnicode);
         board.set(59, Queen.whiteQueenUnicode);
-        board.set(60, WhiteKing.unicode);
+        board.set(60, King.whiteKingUnicode);
         board.set(61, Rook.whiteRookUnicode);
         board.set(62, Knight.whiteKnightUnicode);
         board.set(63, Bishop.whiteBishopUnicode);
