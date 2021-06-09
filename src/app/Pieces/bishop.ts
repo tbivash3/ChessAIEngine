@@ -1,3 +1,4 @@
+import { Piece } from "../model/Piece";
 import { BoardUtil } from "../utility/board.util";
 
 export class Bishop {
@@ -5,7 +6,7 @@ export class Bishop {
 
     static whiteBishopUnicode = "\u2657";
 
-    static getMoves(index: number, board: string[][], bishopType: string): number[] {
+    static getMoves(index: number, board: Piece[], bishopColor: string): number[] {
 
         let moves: number[] = [];
 
@@ -17,15 +18,18 @@ export class Bishop {
 
         let tempColumn = column + 1;
 
+        let piece = board[index];
+
         //Down Right
 
         while (tempRow < 8 && tempColumn < 8) {
 
             const boardIndex = index + 8 * (tempRow - row) + (tempColumn - column);
 
-            if (board[boardIndex][0] === '') {
+            piece = board[boardIndex];
+            if (piece.unicode === '') {
                 moves.push(boardIndex);
-            } else if (board[boardIndex][1] !== bishopType) {
+            } else if (piece.color !== bishopColor) {
                 moves.push(boardIndex);
                 break;
             } else {
@@ -48,10 +52,10 @@ export class Bishop {
         while (tempRow < 8 && tempColumn >= 0) {
 
             const boardIndex = index + 8 * (tempRow - row) - (column - tempColumn);
-
-            if (board[boardIndex][0] === '') {
+            piece = board[boardIndex];
+            if (piece.unicode === '') {
                 moves.push(boardIndex);
-            } else if (board[boardIndex][1] !== bishopType) {
+            } else if (piece.color !== bishopColor) {
                 moves.push(boardIndex);
                 break;
             } else {
@@ -70,10 +74,10 @@ export class Bishop {
         while (tempRow >= 0 && tempColumn < 8) {
 
             const boardIndex = index - 8 * (row - tempRow) + (tempColumn - column);
-
-            if (board[boardIndex][0] === '') {
+            piece = board[boardIndex];
+            if (piece.unicode === '') {
                 moves.push(boardIndex);
-            } else if (board[boardIndex][1] !== bishopType) {
+            } else if (piece.color !== bishopColor) {
                 moves.push(boardIndex);
                 break;
             } else {
@@ -92,10 +96,10 @@ export class Bishop {
         while (tempRow >= 0 && tempColumn >= 0) {
 
             const boardIndex = index - 8 * (row - tempRow) - (column - tempColumn);
-
-            if (board[boardIndex][0] === '') {
+            piece = board[boardIndex];
+            if (piece.unicode === '') {
                 moves.push(boardIndex);
-            } else if (board[boardIndex][1] !== bishopType) {
+            } else if (piece.color !== bishopColor) {
                 moves.push(boardIndex);
                 break;
             } else {

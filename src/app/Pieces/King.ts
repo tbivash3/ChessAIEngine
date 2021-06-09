@@ -1,3 +1,4 @@
+import { Piece } from "../model/Piece";
 import { BoardUtil } from "../utility/board.util";
 
 export class King {
@@ -7,7 +8,7 @@ export class King {
 
     static relativeMovesPair = [[0, 1], [0, -1], [1, 0], [-1, 0], [1, 1], [-1, 1], [-1, -1], [1, -1]];
 
-    static getMoves(index: number, board: string[][], kingType: string): number[] {
+    static getMoves(index: number, board: Piece[], kingColor: string): number[] {
 
         let moves: number[] = [];
 
@@ -19,6 +20,8 @@ export class King {
 
         let tempColumn = 0;
 
+        let piece = board[index];
+
         King.relativeMovesPair.forEach(move => {
 
             tempRow = row + move[0];
@@ -28,7 +31,9 @@ export class King {
 
                 const validMovePosition = index + (8 * move[0]) + move[1];
 
-                if (board[validMovePosition][0] === '' || board[validMovePosition][1] !== kingType)
+                piece = board[validMovePosition];
+
+                if (piece.unicode === '' || piece.color !== kingColor)
                     moves.push(validMovePosition);
             }
 

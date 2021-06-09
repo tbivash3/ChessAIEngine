@@ -1,3 +1,4 @@
+import { Piece } from "../model/Piece";
 import { BoardUtil } from "../utility/board.util";
 
 export class Rook {
@@ -5,12 +6,14 @@ export class Rook {
 
     static whiteRookUnicode = "\u2656";
 
-    static getMoves(index: number, board: string[][], rookType: string): number[] {
+    static getMoves(index: number, board: Piece[], rookType: string): number[] {
         let moves: number[] = [];
 
 
         const row = BoardUtil.getRowNumber(index);
         const column = BoardUtil.getColumnNumber(index);
+
+        let piece = board[index];
 
         let tempPosition = 0;
 
@@ -19,9 +22,11 @@ export class Rook {
 
             tempPosition = index + (i - row) * 8;
 
-            if (board[tempPosition][0] === '') {
+            piece = board[tempPosition];
+
+            if (piece.unicode === '') {
                 moves.push(tempPosition);
-            } else if (board[tempPosition][1] !== rookType) {
+            } else if (piece.color !== rookType) {
                 moves.push(tempPosition);
                 break;
             } else {
@@ -34,9 +39,10 @@ export class Rook {
 
             tempPosition = index - (row - i) * 8;
 
-            if (board[tempPosition][0] === '') {
+            piece = board[tempPosition];
+            if (piece.unicode === '') {
                 moves.push(tempPosition);
-            } else if (board[tempPosition][1] !== rookType) {
+            } else if (piece.color !== rookType) {
                 moves.push(tempPosition);
                 break;
             } else {
@@ -49,9 +55,9 @@ export class Rook {
 
             tempPosition = index + (i - column);
 
-            if (board[tempPosition][0] === '') {
+            if (piece.unicode === '') {
                 moves.push(tempPosition);
-            } else if (board[tempPosition][1] !== rookType) {
+            } else if (piece.color !== rookType) {
                 moves.push(tempPosition);
                 break;
             } else {
@@ -64,9 +70,10 @@ export class Rook {
 
             tempPosition = index - (column - i);
 
-            if (board[tempPosition][0] === '') {
+            piece = board[tempPosition];
+            if (piece.unicode === '') {
                 moves.push(tempPosition);
-            } else if (board[tempPosition][1] !== rookType) {
+            } else if (piece.color !== rookType) {
                 moves.push(tempPosition);
                 break;
             } else {

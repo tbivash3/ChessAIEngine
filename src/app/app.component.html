@@ -2,44 +2,44 @@
 
   <div class="deadPieceContainer">
     <div class="rookContainer deadContainer">
-      <span>{{blackDeadPiecesContainer[0]}}</span>
-      <span>{{blackDeadPiecesContainer[1]}}</span>
+      <span>{{blackDeadPiecesContainer[0].unicode}}</span>
+      <span>{{blackDeadPiecesContainer[1].unicode}}</span>
     </div>
     <div class="knightContainer deadContainer">
-      <span>{{blackDeadPiecesContainer[2]}}</span>
-      <span>{{blackDeadPiecesContainer[3]}}</span>
+      <span>{{blackDeadPiecesContainer[2].unicode}}</span>
+      <span>{{blackDeadPiecesContainer[3].unicode}}</span>
     </div>
     <div class="bishopContainer deadContainer">
-      <span>{{blackDeadPiecesContainer[4]}}</span>
-      <span>{{blackDeadPiecesContainer[5]}}</span>
+      <span>{{blackDeadPiecesContainer[4].unicode}}</span>
+      <span>{{blackDeadPiecesContainer[5].unicode}}</span>
     </div>
     <div class="kingContainer deadContainer">
-      <span>{{blackDeadPiecesContainer[6]}}</span>
+      <span>{{blackDeadPiecesContainer[6].unicode}}</span>
     </div>
     <div class="queenContainer deadContainer">
-      <span>{{blackDeadPiecesContainer[7]}}</span>
+      <span>{{blackDeadPiecesContainer[7].unicode}}</span>
     </div>
     <div class="pawnContainer deadContainer">
-      <span>{{blackDeadPiecesContainer[8]}}</span>
-      <span>{{blackDeadPiecesContainer[9]}}</span>
-      <span>{{blackDeadPiecesContainer[10]}}</span>
-      <span>{{blackDeadPiecesContainer[11]}}</span>
-      <span>{{blackDeadPiecesContainer[12]}}</span>
-      <span>{{blackDeadPiecesContainer[13]}}</span>
-      <span>{{blackDeadPiecesContainer[14]}}</span>
-      <span>{{blackDeadPiecesContainer[15]}}</span>
+      <span>{{blackDeadPiecesContainer[8].unicode}}</span>
+      <span>{{blackDeadPiecesContainer[9].unicode}}</span>
+      <span>{{blackDeadPiecesContainer[10].unicode}}</span>
+      <span>{{blackDeadPiecesContainer[11].unicode}}</span>
+      <span>{{blackDeadPiecesContainer[12].unicode}}</span>
+      <span>{{blackDeadPiecesContainer[13].unicode}}</span>
+      <span>{{blackDeadPiecesContainer[14].unicode}}</span>
+      <span>{{blackDeadPiecesContainer[15].unicode}}</span>
     </div>
   </div>
 
   <div id="board" #board>
-    <h1 class="player-info">{{player}}</h1>
+
 
     <ng-container *ngFor="let i of numOfBoxes">
       <div (drop)="drop($event, i)" (dragover)="allowDrop($event)" id="{{ 'box' + i }}" class="box"
         [style.backgroundColor]="getBackgroundColor(i)" (click)="getValidMoves(i)">
         <span id="{{'dot' + i}}" class="dot"></span>
         <span id="{{ 'piece' + i }}" draggable="true" (dragstart)="dragStart($event, i)" (drag)="dragging($event)"
-          class="piece">{{boardConfiguration[i][0]}}</span>
+          class="piece">{{boardConfiguration[i].unicode}}</span>
       </div>
     </ng-container>
 
@@ -48,32 +48,32 @@
 
   <div class="deadPieceContainer">
     <div class="rookContainer deadContainer rightSide">
-      <span>{{whiteDeadPiecesContainer[0]}}</span>
-      <span>{{whiteDeadPiecesContainer[1]}}</span>
+      <span>{{whiteDeadPiecesContainer[0].unicode}}</span>
+      <span>{{whiteDeadPiecesContainer[1].unicode}}</span>
     </div>
     <div class="knightContainer deadContainer rightSide">
-      <span>{{whiteDeadPiecesContainer[2]}}</span>
-      <span>{{whiteDeadPiecesContainer[3]}}</span>
+      <span>{{whiteDeadPiecesContainer[2].unicode}}</span>
+      <span>{{whiteDeadPiecesContainer[3].unicode}}</span>
     </div>
     <div class="bishopContainer deadContainer rightSide">
-      <span>{{whiteDeadPiecesContainer[4]}}</span>
-      <span>{{whiteDeadPiecesContainer[5]}}</span>
+      <span>{{whiteDeadPiecesContainer[4].unicode}}</span>
+      <span>{{whiteDeadPiecesContainer[5].unicode}}</span>
     </div>
     <div class="kingContainer deadContainer rightSide">
-      <span>{{whiteDeadPiecesContainer[6]}}</span>
+      <span>{{whiteDeadPiecesContainer[6].unicode}}</span>
     </div>
     <div class="queenContainer deadContainer rightSide">
-      <span>{{whiteDeadPiecesContainer[7]}}</span>
+      <span>{{whiteDeadPiecesContainer[7].unicode}}</span>
     </div>
     <div class="pawnContainer deadContainer rightSide">
-      <span>{{whiteDeadPiecesContainer[8]}}</span>
-      <span>{{whiteDeadPiecesContainer[9]}}</span>
-      <span>{{whiteDeadPiecesContainer[10]}}</span>
-      <span>{{whiteDeadPiecesContainer[11]}}</span>
-      <span>{{whiteDeadPiecesContainer[12]}}</span>
-      <span>{{whiteDeadPiecesContainer[13]}}</span>
-      <span>{{whiteDeadPiecesContainer[14]}}</span>
-      <span>{{whiteDeadPiecesContainer[15]}}</span>
+      <span>{{whiteDeadPiecesContainer[8].unicode}}</span>
+      <span>{{whiteDeadPiecesContainer[9].unicode}}</span>
+      <span>{{whiteDeadPiecesContainer[10].unicode}}</span>
+      <span>{{whiteDeadPiecesContainer[11].unicode}}</span>
+      <span>{{whiteDeadPiecesContainer[12].unicode}}</span>
+      <span>{{whiteDeadPiecesContainer[13].unicode}}</span>
+      <span>{{whiteDeadPiecesContainer[14].unicode}}</span>
+      <span>{{whiteDeadPiecesContainer[15].unicode}}</span>
     </div>
   </div>
 

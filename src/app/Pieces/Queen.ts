@@ -1,3 +1,4 @@
+import { Piece } from "../model/Piece";
 import { Bishop } from "./bishop";
 import { Rook } from "./Rook";
 
@@ -6,7 +7,7 @@ export class Queen {
 
     static whiteQueenUnicode = "\u2655";
 
-    static getMoves(index: number, board: string[][], QueenType: string): number[] {
+    static getMoves(index: number, board: Piece[], QueenType: string): number[] {
 
         let rookMoves = Rook.getMoves(index, board, QueenType);
 

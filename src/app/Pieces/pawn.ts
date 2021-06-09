@@ -1,3 +1,4 @@
+import { Piece } from "../model/Piece";
 import { BoardUtil } from "../utility/board.util";
 
 export class Pawn {
@@ -5,20 +6,20 @@ export class Pawn {
 
     static blackPawnUnicode = "\u265F";
 
-    static getMoves(index: number, board: string[][], pawnType: string) {
+    static getMoves(index: number, board: Piece[], pawnColor: string) {
         let moves: number[] = [];
 
-        if (pawnType === 'B') {
+        if (pawnColor === 'B') {
 
-            this.getPawnMovesByColor(index, board, moves, 8, 1, pawnType);
+            this.getPawnMovesByColor(index, board, moves, 8, 1, pawnColor);
         } else {
-            this.getPawnMovesByColor(index, board, moves, -8, -1, pawnType);
+            this.getPawnMovesByColor(index, board, moves, -8, -1, pawnColor);
         }
 
         return moves;
     }
 
-    static getPawnMovesByColor(index: number, board: string[][], moves: number[], rowAdjuster: number, columnAdjuster: number, pawnType: string) {
+    static getPawnMovesByColor(index: number, board: Piece[], moves: number[], rowAdjuster: number, columnAdjuster: number, pawnColor: string) {
         const row = BoardUtil.getRowNumber(index);
 
         const frontMove = index + rowAdjuster;
@@ -27,19 +28,22 @@ export class Pawn {
 
         const rightDiagonalMove = frontMove + 1;
 
+        const piece = board[index];
+
         // check front move
-        if (board[frontMove][0] === '') moves.push(frontMove);
+        if (piece.unicode === '') moves.push(frontMove);
 
         //check left diagonal move
-        if (BoardUtil.getRowNumber(leftDiagonalMove) === row + columnAdjuster && board[leftDiagonalMove][0] !== '' && board[leftDiagonalMove][1] !== pawnType) moves.push(leftDiagonalMove);
+        if (BoardUtil.getRowNumber(leftDiagonalMove) === row + columnAdjuster && piece.unicode !== '' && piece.color !== pawnColor) moves.push(leftDiagonalMove);
 
         //check right diagonal move
-        if (BoardUtil.getRowNumber(rightDiagonalMove) === row + columnAdjuster && board[rightDiagonalMove][0] !== '' && board[rightDiagonalMove][1] !== pawnType) moves.push(rightDiagonalMove);
+        if (BoardUtil.getRowNumber(rightDiagonalMove) === row + columnAdjuster && piece.unicode !== '' && piece.color !== pawnColor) moves.push(rightDiagonalMove);
 
         // check if first row pawn move --- check front move for second position
-        if ((row === 6 && pawnType === 'W') || (row === 1 && pawnType === 'B')) {
+        if ((row === 6 && pawnColor === 'W') || (row === 1 && pawnColor === 'B')) {
             const secondFrontMove = frontMove + rowAdjuster;
-            if (board[secondFrontMove][0] === '' && board[frontMove][0] === '') moves.push(secondFrontMove);
+            const secondPiece = board[secondFrontMove];
+            if (secondPiece.unicode === '' && piece.unicode === '') moves.push(secondFrontMove);
         }
 
     }
