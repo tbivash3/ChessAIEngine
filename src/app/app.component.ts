@@ -125,14 +125,14 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     const pieceColor = currentPiece[1];
 
-    // if (pieceColor === this.currentPlayer) {
+    if (pieceColor === this.currentPlayer) {
 
 
-    this.validMoves = this.getValidMoves(index);
+      this.validMoves = this.getValidMoves(index);
 
-    this.addValidMovesBackgroundColor();
-    event.dataTransfer.setData("source", index);
-    // }
+      this.addValidMovesBackgroundColor();
+      event.dataTransfer.setData("source", index);
+    }
   }
 
   getValidMoves(index: number): number[] {
@@ -182,15 +182,15 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     const pieceColor = currentPiece[1];
 
-    //if (pieceColor === this.currentPlayer) {
+    if (pieceColor === this.currentPlayer) {
 
-    this.removeValidMovesBackgroundColor();
+      this.removeValidMovesBackgroundColor();
 
-    this.validMoves = moves;
+      this.validMoves = moves;
 
-    this.addValidMovesBackgroundColor();
+      this.addValidMovesBackgroundColor();
 
-    // }
+    }
 
     return moves;
   }
@@ -288,9 +288,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.PAWN_START_INDEX[pos] += 1;
         break;
     }
-
-    console.log(pos);
-    console.log(index);
     return index;
   }
 
@@ -310,7 +307,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   addValidMovesBackgroundColor() {
     this.validMoves.forEach(index => {
 
-      const id = 'box' + index;
+      const id = 'dot' + index;
       document.getElementById(id)?.classList.add('validMove');
 
     })
@@ -318,7 +315,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   removeValidMovesBackgroundColor() {
     this.validMoves.forEach(index => {
-      const id = 'box' + index;
+      const id = 'dot' + index;
       document.getElementById(id)?.classList.remove('validMove');
     })
   }

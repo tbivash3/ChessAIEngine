@@ -4,6 +4,7 @@ h1 {
     left: 26.5%;
     font-size: 4vw;
     color: rgba(66, 212, 30, 0.3);
+    z-index: 1;
 }
 
 #container {
@@ -58,12 +59,25 @@ h1 {
     width: 12.5%;
     height: 12.5%;
     text-align: center;
+    position: relative;
 }
+
+.dot {
+    position: absolute;
+    top: 42%;
+    left: 40%;
+    height: 1vw;
+    width: 1vw;
+    background-color: rgb(58, 58, 58);
+    border-radius: 50%;
+    display: inline-block;
+    opacity: 0;
+  }
 
 .piece {
    cursor: pointer;
 }
 
 .validMove {
-    background-color: rgba(green, 0.8) !important;
+    opacity: 1 !important;
 }
