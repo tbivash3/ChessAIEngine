@@ -53,6 +53,18 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   validMoves: number[] = [];
 
+  playerOneMoves: Set<String> = new Set();
+
+  playerTwoMoves: Set<String> = new Set();
+
+  playerOne = 'B';
+
+  playerTwo = 'W';
+
+  currentPlayer = 'B';
+
+  pieceSelectedIndex = -1;
+
   constructor() { }
 
   @ViewChild('board')
@@ -70,6 +82,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     for (let i = 0; i < 16; i++) {
       this.boardConfiguration.push([this.initialBoardConfigurationMap.get(i)?.[0] || '', "B", this.initialBoardConfigurationMap.get(i)?.[1] || '']);
+      this.playerOneMoves.add(this.initialBoardConfigurationMap.get(i)?.[0] || '');
     }
 
     for (let i = 16; i < 48; i++) {
@@ -78,6 +91,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     for (let i = 48; i < 64; i++) {
       this.boardConfiguration.push([this.initialBoardConfigurationMap.get(i)?.[0] || '', "W", this.initialBoardConfigurationMap.get(i)?.[1] || '']);
+      this.playerTwoMoves.add(this.initialBoardConfigurationMap.get(i)?.[0] || '');
     }
   }
 
@@ -100,10 +114,23 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   dragStart(event: any, index: number) {
-    this.validMoves = this.getValidMoves(index);
 
-    this.addValidMovesBackgroundColor();
-    event.dataTransfer.setData("source", index);
+    this.removeValidMovesBackgroundColor();
+
+    this.validMoves = [];
+
+    const currentPiece = this.boardConfiguration[index];
+
+    const pieceColor = currentPiece[1];
+
+    if (pieceColor === this.currentPlayer) {
+
+
+      this.validMoves = this.getValidMoves(index);
+
+      this.addValidMovesBackgroundColor();
+      event.dataTransfer.setData("source", index);
+    }
   }
 
   getValidMoves(index: number): number[] {
@@ -149,6 +176,20 @@ export class AppComponent implements OnInit, AfterViewInit {
       moves = King.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_BLACK);
     }
 
+    const currentPiece = this.boardConfiguration[index];
+
+    const pieceColor = currentPiece[1];
+
+    if (pieceColor === this.currentPlayer) {
+
+      this.removeValidMovesBackgroundColor();
+
+      this.validMoves = moves;
+
+      this.addValidMovesBackgroundColor();
+
+    }
+
     return moves;
   }
 
@@ -179,9 +220,11 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.boardConfiguration[destinationIndex] = currentSourceIndexValue;
 
       this.boardConfiguration[sourceIndex] = ['', ''];
-    }
 
+      this.currentPlayer = this.currentPlayer === this.playerOne ? this.playerTwo : this.playerOne;
+    }
   }
+
   setDeadPieceContainerArray(piece: string[]) {
 
     const color = piece[1];
@@ -195,8 +238,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     let index = this.getIndex(type);
-
-    console.log(index);
 
     arr[index] = unicode;
   }
