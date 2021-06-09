@@ -15,6 +15,8 @@ import { BoardUtil } from './utility/board.util';
 })
 export class AppComponent implements OnInit, AfterViewInit {
 
+  player = "Black Turn"
+
   PIECE_BLACK_INDEX = 0;
 
   PIECE_WHITE_INDEX = 1;
@@ -222,6 +224,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.boardConfiguration[sourceIndex] = ['', ''];
 
       this.currentPlayer = this.currentPlayer === this.playerOne ? this.playerTwo : this.playerOne;
+
+      this.player = this.currentPlayer === this.playerOne ? "Black Turn" : "White Turn";
     }
   }
 
