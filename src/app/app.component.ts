@@ -21,17 +21,17 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   PIECE_WHITE_INDEX = 1;
 
-  ROOK_START_INDEX = 0;
+  ROOK_START_INDEX = [0, 0];
 
-  KNIGHT_START_INDEX = 2;
+  KNIGHT_START_INDEX = [2, 2];
 
-  BISHOP_START_INDEX = 4;
+  BISHOP_START_INDEX = [4, 4];
 
-  KING_START_INDEX = 6;
+  KING_START_INDEX = [6, 6];
 
-  QUEEN_START_INDEX = 7;
+  QUEEN_START_INDEX = [7, 7];
 
-  PAWN_START_INDEX = 8;
+  PAWN_START_INDEX = [8, 8];
 
   PIECE_COLOR_BLACK = 'B';
 
@@ -125,14 +125,14 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     const pieceColor = currentPiece[1];
 
-    if (pieceColor === this.currentPlayer) {
+    // if (pieceColor === this.currentPlayer) {
 
 
-      this.validMoves = this.getValidMoves(index);
+    this.validMoves = this.getValidMoves(index);
 
-      this.addValidMovesBackgroundColor();
-      event.dataTransfer.setData("source", index);
-    }
+    this.addValidMovesBackgroundColor();
+    event.dataTransfer.setData("source", index);
+    // }
   }
 
   getValidMoves(index: number): number[] {
@@ -182,15 +182,15 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     const pieceColor = currentPiece[1];
 
-    if (pieceColor === this.currentPlayer) {
+    //if (pieceColor === this.currentPlayer) {
 
-      this.removeValidMovesBackgroundColor();
+    this.removeValidMovesBackgroundColor();
 
-      this.validMoves = moves;
+    this.validMoves = moves;
 
-      this.addValidMovesBackgroundColor();
+    this.addValidMovesBackgroundColor();
 
-    }
+    // }
 
     return moves;
   }
@@ -241,44 +241,56 @@ export class AppComponent implements OnInit, AfterViewInit {
       arr = this.whiteDeadPiecesContainer;
     }
 
-    let index = this.getIndex(type);
+    let index = this.getIndex(type, color);
 
     arr[index] = unicode;
   }
-  getIndex(type: string) {
+
+  getIndex(type: string, color: string) {
 
     let index = -1;
+
+    let pos = 0;
 
     switch (type) {
 
       case "R":
-        index = this.ROOK_START_INDEX;
-        this.ROOK_START_INDEX += 1;
+        pos = color === this.PIECE_COLOR_BLACK ? 0 : 1;
+        index = this.ROOK_START_INDEX[pos];
+        this.ROOK_START_INDEX[pos] += 1;
         break;
 
       case "K":
-        index = this.KNIGHT_START_INDEX;
-        this.KNIGHT_START_INDEX += 1;
+        pos = color === this.PIECE_COLOR_BLACK ? 0 : 1;
+        index = this.KNIGHT_START_INDEX[pos];
+        this.KNIGHT_START_INDEX[pos] += 1;
         break;
 
       case "B":
-        index = this.BISHOP_START_INDEX;
-        this.BISHOP_START_INDEX += 1;
+        pos = color === this.PIECE_COLOR_BLACK ? 0 : 1;
+        index = this.BISHOP_START_INDEX[pos];
+        this.BISHOP_START_INDEX[pos] += 1;
         break;
 
       case "KG":
-        index = this.KING_START_INDEX;
+        pos = color === this.PIECE_COLOR_BLACK ? 0 : 1;
+        index = this.KING_START_INDEX[pos];
         break;
 
       case "Q":
-        index = this.QUEEN_START_INDEX;
+        pos = color === this.PIECE_COLOR_BLACK ? 0 : 1;
+        index = this.QUEEN_START_INDEX[pos];
         break;
 
       case "P":
-        index = this.PAWN_START_INDEX;
-        this.PAWN_START_INDEX += 1;
+        pos = color === this.PIECE_COLOR_BLACK ? 0 : 1;
+        index = this.PAWN_START_INDEX[pos];
+        this.PAWN_START_INDEX[pos] += 1;
         break;
     }
+
+    console.log(pos);
+    console.log(index);
     return index;
   }
 

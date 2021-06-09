@@ -22,9 +22,9 @@ export class BoardUtil {
         board.set(2, [Bishop.blackBishopUnicode, 'B']);
         board.set(3, [Queen.blackQueenUnicode, 'Q']);
         board.set(4, [King.blackKingUnicode, 'KG']);
-        board.set(5, [Rook.blackRookUnicode, 'R']);
+        board.set(5, [Bishop.blackBishopUnicode, 'B']);
         board.set(6, [Knight.blackKnightUnicode, 'K']);
-        board.set(7, [Bishop.blackBishopUnicode, 'B']);
+        board.set(7, [Rook.blackRookUnicode, 'R']);
 
         board.set(8, [Pawn.blackPawnUnicode, 'P']);
         board.set(9, [Pawn.blackPawnUnicode, 'P']);
@@ -49,9 +49,9 @@ export class BoardUtil {
         board.set(58, [Bishop.whiteBishopUnicode, 'B']);
         board.set(59, [Queen.whiteQueenUnicode, 'Q']);
         board.set(60, [King.whiteKingUnicode, 'KG']);
-        board.set(61, [Rook.whiteRookUnicode, 'R']);
+        board.set(61, [Bishop.whiteBishopUnicode, 'B']);
         board.set(62, [Knight.whiteKnightUnicode, 'K']);
-        board.set(63, [Bishop.whiteBishopUnicode, 'B']);
+        board.set(63, [Rook.whiteRookUnicode, 'R']);
 
         return board;
     }

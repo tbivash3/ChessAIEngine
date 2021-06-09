@@ -1,41 +1,38 @@
-<h1 class="player-info">{{player}}</h1>
-
 <div id="container">
-  <div class='side-bar'>
 
-    <div class="deadPieceContainer">
-      <div class="rookContainer deadContainer">
-        <span>{{blackDeadPiecesContainer[0]}}</span>
-        <span>{{blackDeadPiecesContainer[1]}}</span>
-      </div>
-      <div class="knightContainer deadContainer">
-        <span>{{blackDeadPiecesContainer[2]}}</span>
-        <span>{{blackDeadPiecesContainer[3]}}</span>
-      </div>
-      <div class="bishopContainer deadContainer">
-        <span>{{blackDeadPiecesContainer[4]}}</span>
-        <span>{{blackDeadPiecesContainer[5]}}</span>
-      </div>
-      <div class="kingContainer deadContainer">
-        <span>{{blackDeadPiecesContainer[6]}}</span>
-      </div>
-      <div class="queenContainer deadContainer">
-        <span>{{blackDeadPiecesContainer[7]}}</span>
-      </div>
-      <div class="pawnContainer deadContainer">
-        <span>{{blackDeadPiecesContainer[8]}}</span>
-        <span>{{blackDeadPiecesContainer[9]}}</span>
-        <span>{{blackDeadPiecesContainer[10]}}</span>
-        <span>{{blackDeadPiecesContainer[11]}}</span>
-        <span>{{blackDeadPiecesContainer[12]}}</span>
-        <span>{{blackDeadPiecesContainer[13]}}</span>
-        <span>{{blackDeadPiecesContainer[14]}}</span>
-        <span>{{blackDeadPiecesContainer[15]}}</span>
-      </div>
+  <div class="deadPieceContainer">
+    <div class="rookContainer deadContainer">
+      <span>{{blackDeadPiecesContainer[0]}}</span>
+      <span>{{blackDeadPiecesContainer[1]}}</span>
     </div>
-
+    <div class="knightContainer deadContainer">
+      <span>{{blackDeadPiecesContainer[2]}}</span>
+      <span>{{blackDeadPiecesContainer[3]}}</span>
+    </div>
+    <div class="bishopContainer deadContainer">
+      <span>{{blackDeadPiecesContainer[4]}}</span>
+      <span>{{blackDeadPiecesContainer[5]}}</span>
+    </div>
+    <div class="kingContainer deadContainer">
+      <span>{{blackDeadPiecesContainer[6]}}</span>
+    </div>
+    <div class="queenContainer deadContainer">
+      <span>{{blackDeadPiecesContainer[7]}}</span>
+    </div>
+    <div class="pawnContainer deadContainer">
+      <span>{{blackDeadPiecesContainer[8]}}</span>
+      <span>{{blackDeadPiecesContainer[9]}}</span>
+      <span>{{blackDeadPiecesContainer[10]}}</span>
+      <span>{{blackDeadPiecesContainer[11]}}</span>
+      <span>{{blackDeadPiecesContainer[12]}}</span>
+      <span>{{blackDeadPiecesContainer[13]}}</span>
+      <span>{{blackDeadPiecesContainer[14]}}</span>
+      <span>{{blackDeadPiecesContainer[15]}}</span>
+    </div>
   </div>
+
   <div id="board" #board>
+    <h1 class="player-info">{{player}}</h1>
 
     <ng-container *ngFor="let i of numOfBoxes">
       <div (drop)="drop($event, i)" (dragover)="allowDrop($event)" id="{{ 'box' + i }}" class="box"
