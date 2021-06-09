@@ -1,6 +1,7 @@
 <div id="container">
 
   <div class="deadPieceContainer">
+    <h1 *ngIf="currentPlayer === playerOne">Your Turn</h1>
     <div class="rookContainer deadContainer">
       <span>{{blackDeadPiecesContainer[0].unicode}}</span>
       <span>{{blackDeadPiecesContainer[1].unicode}}</span>
@@ -32,8 +33,6 @@
   </div>
 
   <div id="board" #board>
-
-
     <ng-container *ngFor="let i of numOfBoxes">
       <div (drop)="drop($event, i)" (dragover)="allowDrop($event)" id="{{ 'box' + i }}" class="box"
         [style.backgroundColor]="getBackgroundColor(i)" (click)="getValidMoves(i)">
@@ -75,6 +74,7 @@
       <span>{{whiteDeadPiecesContainer[14].unicode}}</span>
       <span>{{whiteDeadPiecesContainer[15].unicode}}</span>
     </div>
+    <h1 *ngIf="currentPlayer === playerTwo">Your Turn</h1>
   </div>
 
 </div>

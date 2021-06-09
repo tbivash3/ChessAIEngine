@@ -9,7 +9,6 @@ export class Rook {
     static getMoves(index: number, board: Piece[], rookType: string): number[] {
         let moves: number[] = [];
 
-
         const row = BoardUtil.getRowNumber(index);
         const column = BoardUtil.getColumnNumber(index);
 
@@ -54,7 +53,7 @@ export class Rook {
         for (let i = column + 1; i < 8; i++) {
 
             tempPosition = index + (i - column);
-
+            piece = board[tempPosition];
             if (piece.unicode === '') {
                 moves.push(tempPosition);
             } else if (piece.color !== rookType) {

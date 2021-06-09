@@ -10,7 +10,6 @@ export class Pawn {
         let moves: number[] = [];
 
         if (pawnColor === 'B') {
-
             this.getPawnMovesByColor(index, board, moves, 8, 1, pawnColor);
         } else {
             this.getPawnMovesByColor(index, board, moves, -8, -1, pawnColor);
@@ -28,15 +27,18 @@ export class Pawn {
 
         const rightDiagonalMove = frontMove + 1;
 
-        const piece = board[index];
+        let piece = board[index];
 
         // check front move
+        piece = board[frontMove];
         if (piece.unicode === '') moves.push(frontMove);
 
         //check left diagonal move
+        piece = board[leftDiagonalMove];
         if (BoardUtil.getRowNumber(leftDiagonalMove) === row + columnAdjuster && piece.unicode !== '' && piece.color !== pawnColor) moves.push(leftDiagonalMove);
 
         //check right diagonal move
+        piece = board[rightDiagonalMove];
         if (BoardUtil.getRowNumber(rightDiagonalMove) === row + columnAdjuster && piece.unicode !== '' && piece.color !== pawnColor) moves.push(rightDiagonalMove);
 
         // check if first row pawn move --- check front move for second position

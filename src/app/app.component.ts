@@ -14,7 +14,7 @@ import { BoardUtil } from './utility/board.util';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
 
   player = "Black Turn"
 
@@ -97,9 +97,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     for (let i = 16; i < 48; i++) {
-      const unicode = this.initialBoardConfigurationMap.get(i)?.[0] || '';
-      const type = this.initialBoardConfigurationMap.get(i)?.[1] || '';
-      const color = this.initialBoardConfigurationMap.get(i)?.[2] || ''
+      const unicode = '';
+      const type = '';
+      const color = ''
 
       const piece: Piece = { unicode, type, color };
 
@@ -118,10 +118,6 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit(): void {
-    this.boxSize = 100;
-  }
-
   getBackgroundColor(index: number) {
 
     let color = '#42f597';
@@ -138,16 +134,16 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   dragStart(event: any, index: number) {
 
-    this.removeValidMovesBackgroundColor();
-
-    this.validMoves = [];
+    if (this.validMoves.length !== 0) {
+      this.validMoves = [];
+      this.removeValidMovesBackgroundColor();
+    }
 
     const currentPiece = this.boardConfiguration[index];
 
     const pieceColor = currentPiece.color;
 
     if (pieceColor === this.currentPlayer) {
-
 
       this.validMoves = this.getValidMoves(index);
 
@@ -232,15 +228,15 @@ export class AppComponent implements OnInit, AfterViewInit {
 
       const sourceIndex = event.dataTransfer.getData("source");
 
-      const currentSourceIndexValue = this.boardConfiguration[sourceIndex];
+      const sourcePiece = this.boardConfiguration[sourceIndex];
 
-      const destinationIndexValue = this.boardConfiguration[destinationIndex];
+      const destinationPiece = this.boardConfiguration[destinationIndex];
 
-      if (destinationIndexValue.unicode !== '') {
-        this.setDeadPieceContainerArray(destinationIndexValue);
+      if (destinationPiece.unicode !== '') {
+        this.setDeadPieceContainerArray(destinationPiece);
       }
 
-      this.boardConfiguration[destinationIndex] = currentSourceIndexValue;
+      this.boardConfiguration[destinationIndex] = sourcePiece;
 
       this.boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '' };
 
