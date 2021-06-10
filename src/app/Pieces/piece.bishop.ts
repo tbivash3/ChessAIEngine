@@ -1,4 +1,4 @@
-import { Piece } from "../model/Piece";
+import { Piece } from "../model/piece";
 import { BoardUtil } from "../utility/board.util";
 
 export class Bishop {

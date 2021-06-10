@@ -26,10 +26,10 @@ h1 {
     margin-top: auto;
     margin-bottom: auto;
   
-    width: 20vw;
-    height: 40vw;
+    width: 16vw;
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 .deadContainer {
@@ -37,9 +37,9 @@ h1 {
     flex-direction: row-reverse;
 
     span {
-        width: 5vw;
-        height: 5vw;
-        font-size: 4vw;
+        width: 4vw;
+        height: 4vw;
+        font-size: 3vw;
     }
 
     &.rightSide {

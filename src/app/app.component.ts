@@ -1,13 +1,10 @@
 import { ArrayDataSource } from '@angular/cdk/collections';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Constants } from './model/constants';
-import { Piece } from './model/Piece';
-import { Bishop } from './Pieces/bishop';
-import { King } from './Pieces/King';
-import { Knight } from './Pieces/knight';
-import { Pawn } from './Pieces/pawn';
-import { Queen } from './Pieces/Queen';
-import { Rook } from './Pieces/Rook';
+import { Piece } from './model/piece';
+import { Bishop } from './Pieces/piece.bishop';
+import { King } from './Pieces/piece.king';
+
 import { BoardUtil } from './utility/board.util';
 import { MovesUtil } from './utility/moves.uti';
 
@@ -18,27 +15,15 @@ import { MovesUtil } from './utility/moves.uti';
 })
 export class AppComponent implements OnInit {
 
-  blackKingIndex = 4;
+  blackKingIndex = Constants.BLACK_KING_INITIAL_INDEX;
 
-  whiteKingIndex = 60;
+  whiteKingIndex = Constants.WHTE_KING_INITIAL_INDEX;
 
-  ROOK_START_INDEX = [0, 0];
-
-  KNIGHT_START_INDEX = [2, 2];
-
-  BISHOP_START_INDEX = [4, 4];
-
-  KING_START_INDEX = [6, 6];
-
-  QUEEN_START_INDEX = [7, 7];
-
-  PAWN_START_INDEX = [8, 8];
+  piecesStartIndexInDeadContainer = Constants.getPiecesStartIndex();
 
   numOfBoxes: number[] = [];
 
   boardConfiguration: Piece[] = [];
-
-  originalBoardConfiguration: Piece[] = [];
 
   blackDeadPiecesContainer = new Array<Piece>(16);
 
@@ -66,9 +51,6 @@ export class AppComponent implements OnInit {
     this.numOfBoxes = Array.from(Array(64).keys())
 
     this.boardConfiguration = BoardUtil.getInitialBoardConfiguration();
-
-    this.originalBoardConfiguration = BoardUtil.getInitialBoardConfiguration();
-
   }
 
   getBackgroundColor(index: number) {
@@ -138,16 +120,22 @@ export class AppComponent implements OnInit {
     }
 
     if (isGameOver) {
-      const id = this.currentPlayer === Constants.PLAYER_ONE ? 'white-winner-text' : 'black-winner-text'
 
-      document.getElementById(id)?.classList.add('winner-text-show');
 
-      this.validMoves = [];
-
-      this.boardConfiguration = this.originalBoardConfiguration;
+      this.resetGame();
 
     }
   }
+  resetGame() {
+    const id = this.currentPlayer === Constants.PLAYER_ONE ? 'white-winner-text' : 'black-winner-text'
+
+    document.getElementById(id)?.classList.add('winner-text-show');
+
+    this.validMoves = [];
+
+    //this.boardConfiguration = BoardUtil.getInitialBoardConfiguration();
+  }
+
 
   checkIfKingIsChecked(validMoves: number[], sourceIndex: number): number[] {
 
@@ -278,53 +266,27 @@ export class AppComponent implements OnInit {
       arr = this.whiteDeadPiecesContainer;
     }
 
-    let index = this.getIndex(type, color);
+    let index = this.getPieceIndex(type, color);
 
     arr[index] = piece;
   }
 
-  getIndex(type: string, color: string) {
+  getPieceIndex(type: string, color: string) {
 
     let index = -1;
 
     let pos = 0;
 
-    switch (type) {
+    const indexArr = this.piecesStartIndexInDeadContainer.get(type) || [0, 1];
 
-      case "R":
-        pos = color === Constants.PIECE_COLOR_BLACK ? 0 : 1;
-        index = this.ROOK_START_INDEX[pos];
-        this.ROOK_START_INDEX[pos] += 1;
-        break;
+    if (this.currentPlayer === Constants.PLAYER_TWO) pos = 1;
 
-      case "K":
-        pos = color === Constants.PIECE_COLOR_BLACK ? 0 : 1;
-        index = this.KNIGHT_START_INDEX[pos];
-        this.KNIGHT_START_INDEX[pos] += 1;
-        break;
+    index = indexArr[pos];
 
-      case "B":
-        pos = color === Constants.PIECE_COLOR_BLACK ? 0 : 1;
-        index = this.BISHOP_START_INDEX[pos];
-        this.BISHOP_START_INDEX[pos] += 1;
-        break;
+    indexArr[pos]++;
 
-      case "KG":
-        pos = color === Constants.PIECE_COLOR_BLACK ? 0 : 1;
-        index = this.KING_START_INDEX[pos];
-        break;
+    this.piecesStartIndexInDeadContainer.set(type, indexArr);
 
-      case "Q":
-        pos = color === Constants.PIECE_COLOR_BLACK ? 0 : 1;
-        index = this.QUEEN_START_INDEX[pos];
-        break;
-
-      case "P":
-        pos = color === Constants.PIECE_COLOR_BLACK ? 0 : 1;
-        index = this.PAWN_START_INDEX[pos];
-        this.PAWN_START_INDEX[pos] += 1;
-        break;
-    }
     return index;
   }
 

@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Constants } from "../model/constants";
-import { Piece } from "../model/Piece";
-import { Bishop } from "../Pieces/bishop";
-import { King } from "../Pieces/King";
-import { Knight } from "../Pieces/knight";
-import { Pawn } from "../Pieces/pawn";
-import { Queen } from "../Pieces/Queen";
-import { Rook } from "../Pieces/Rook";
+import { Piece } from "../model/piece";
+import { Bishop } from "../Pieces/piece.bishop";
+import { King } from "../Pieces/piece.king";
+import { Knight } from "../Pieces/piece.knight.";
+import { Pawn } from "../Pieces/piece.pawn";
+import { Queen } from "../Pieces/piece.queen";
+import { Rook } from "../Pieces/piece.rook";
+
 
 Injectable({ providedIn: 'root' })
 export class BoardUtil {

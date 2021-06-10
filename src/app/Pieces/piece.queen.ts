@@ -1,6 +1,6 @@
-import { Piece } from "../model/Piece";
-import { Bishop } from "./bishop";
-import { Rook } from "./Rook";
+import { Piece } from "../model/piece";
+import { Bishop } from "./piece.bishop";
+import { Rook } from "./piece.rook";
 
 export class Queen {
     static blackQueenUnicode = "\u265B";
