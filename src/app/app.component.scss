@@ -57,24 +57,52 @@ h1 {
     height: 12.5%;
     text-align: center;
     position: relative;
+
+    .piece {
+        cursor: grab;
+    
+        &:active {
+            cursor: grabbing !important;
+        }
+    }
 }
 
 .dot {
     position: absolute;
-    top: 42%;
-    left: 40%;
-    height: 1vw;
-    width: 1vw;
-    background-color: rgb(58, 58, 58);
+    top: 39%;
+    left: 37%;
+    height: 1.5vw;
+    width: 1.5vw;
+    background-color: #bd7a46;
     border-radius: 50%;
     display: none;
   }
 
-.piece {
-   cursor: pointer;
-}
-
 .validMove {
     opacity: 1 !important;
     display: inline-block;
+}
+
+#black-winner-text {
+    position: absolute;
+    z-index: 1;
+    top: 7%;
+    left: 30%;
+    font-size: 4vw;
+    color: #e48f4f;
+    display: none;
+}
+
+#white-winner-text {
+    position: absolute;
+    top: 81%;
+    left: 30%;
+    font-size: 4vw;
+    color: #69d5f0;
+    z-index: 1;
+    display: none;
+}
+
+.winner-text-show {
+    display: block !important;
 }

@@ -7,6 +7,8 @@ export class Queen {
 
     static whiteQueenUnicode = "\u2655";
 
+    static QUEEN = "Q";
+
     static getMoves(index: number, board: Piece[], QueenType: string): number[] {
 
         let rookMoves = Rook.getMoves(index, board, QueenType);

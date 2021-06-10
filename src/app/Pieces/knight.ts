@@ -6,6 +6,8 @@ export class Knight {
 
     static whiteKnightUnicode = "\u2658";
 
+    static KNIGHT = "K";
+
     static relativeMovesPair = [[1, 2], [2, 1], [1, -2], [2, -1], [-1, 2], [-1, -2], [-2, 1], [-2, -1]];
 
     static getMoves(index: number, board: Piece[], knightColor: string): number[] {

@@ -1,5 +1,6 @@
 import { ArrayDataSource } from '@angular/cdk/collections';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Constants } from './model/constants';
 import { Piece } from './model/Piece';
 import { Bishop } from './Pieces/bishop';
 import { King } from './Pieces/King';
@@ -8,6 +9,7 @@ import { Pawn } from './Pieces/pawn';
 import { Queen } from './Pieces/Queen';
 import { Rook } from './Pieces/Rook';
 import { BoardUtil } from './utility/board.util';
+import { MovesUtil } from './utility/moves.uti';
 
 @Component({
   selector: 'app-root',
@@ -16,11 +18,9 @@ import { BoardUtil } from './utility/board.util';
 })
 export class AppComponent implements OnInit {
 
-  player = "Black Turn"
+  blackKingIndex = 4;
 
-  PIECE_BLACK_INDEX = 0;
-
-  PIECE_WHITE_INDEX = 1;
+  whiteKingIndex = 60;
 
   ROOK_START_INDEX = [0, 0];
 
@@ -34,19 +34,11 @@ export class AppComponent implements OnInit {
 
   PAWN_START_INDEX = [8, 8];
 
-  PIECE_COLOR_BLACK = 'B';
-
-  PIECE_COLOR_WHITE = 'W';
-
-  title = 'ChessAIEngine';
-
-  boxSize = 0;
-
   numOfBoxes: number[] = [];
 
-  initialBoardConfigurationMap: Map<number, string[]> = new Map();
-
   boardConfiguration: Piece[] = [];
+
+  originalBoardConfiguration: Piece[] = [];
 
   blackDeadPiecesContainer = new Array<Piece>(16);
 
@@ -56,17 +48,7 @@ export class AppComponent implements OnInit {
 
   validMoves: number[] = [];
 
-  playerOneMoves: Set<String> = new Set();
-
-  playerTwoMoves: Set<String> = new Set();
-
-  playerOne = 'B';
-
-  playerTwo = 'W';
-
-  currentPlayer = 'B';
-
-  pieceSelectedIndex = -1;
+  currentPlayer = Constants.PLAYER_ONE;
 
   constructor() { }
 
@@ -75,7 +57,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const emptyPiece = { color: '', type: '', unicode: '' };
+    const emptyPiece = { color: '', type: '', unicode: '', index: -1 };
 
     this.blackDeadPiecesContainer.fill(emptyPiece);
 
@@ -83,53 +65,14 @@ export class AppComponent implements OnInit {
 
     this.numOfBoxes = Array.from(Array(64).keys())
 
-    this.initialBoardConfigurationMap = BoardUtil.getInitialBoardConfigurationMap();
+    this.boardConfiguration = BoardUtil.getInitialBoardConfiguration();
 
-    for (let i = 0; i < 16; i++) {
-      const unicode = this.initialBoardConfigurationMap.get(i)?.[0] || '';
-      const type = this.initialBoardConfigurationMap.get(i)?.[1] || '';
-      const color = this.initialBoardConfigurationMap.get(i)?.[2] || ''
+    this.originalBoardConfiguration = BoardUtil.getInitialBoardConfiguration();
 
-      const piece: Piece = { unicode, type, color };
-
-      this.boardConfiguration.push(piece);
-      this.playerOneMoves.add(this.initialBoardConfigurationMap.get(i)?.[0] || '');
-    }
-
-    for (let i = 16; i < 48; i++) {
-      const unicode = '';
-      const type = '';
-      const color = ''
-
-      const piece: Piece = { unicode, type, color };
-
-      this.boardConfiguration.push(piece);
-    }
-
-    for (let i = 48; i < 64; i++) {
-      const unicode = this.initialBoardConfigurationMap.get(i)?.[0] || '';
-      const type = this.initialBoardConfigurationMap.get(i)?.[1] || '';
-      const color = this.initialBoardConfigurationMap.get(i)?.[2] || ''
-
-      const piece: Piece = { unicode, type, color };
-
-      this.boardConfiguration.push(piece);
-      this.playerTwoMoves.add(this.initialBoardConfigurationMap.get(i)?.[0] || '');
-    }
   }
 
   getBackgroundColor(index: number) {
-
-    let color = '#42f597';
-
-    const row = BoardUtil.getRowNumber(index);
-    const column = BoardUtil.getColumnNumber(index);
-
-    if ((row + column) % 2 === 0) {
-      color = '#9e72b5';
-    }
-
-    return color;
+    return BoardUtil.getBackgroundColor(index);
   }
 
   dragStart(event: any, index: number) {
@@ -154,66 +97,128 @@ export class AppComponent implements OnInit {
 
   getValidMoves(index: number): number[] {
 
-    let moves: number[] = [];
-
     let pieceInfo = this.boardConfiguration[index];
 
-    let pieceUnicode = pieceInfo.unicode;
+    let validMoves = MovesUtil.getValidMoves(index, this.boardConfiguration);
 
-    let pieceColor = pieceInfo.color;
+    // if (pieceInfo.color === this.currentPlayer) {
 
-    if (pieceUnicode === Pawn.blackPawnUnicode) {
-      moves = Pawn.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_BLACK);
+    //   this.removeValidMovesBackgroundColor();
 
-    } else if (pieceUnicode === Pawn.whitePawnUnicode) {
-      moves = Pawn.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
+    //   this.validMoves = validMoves;
 
-    } else if (pieceUnicode === Rook.blackRookUnicode) {
-      moves = Rook.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_BLACK);
+    //   this.addValidMovesBackgroundColor();
 
-    } else if (pieceUnicode === Rook.whiteRookUnicode) {
-      moves = Rook.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
+    // }
 
-    } else if (pieceUnicode === Knight.blackKnightUnicode) {
-      moves = Knight.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_BLACK);
+    validMoves = this.checkIfKingIsChecked(validMoves, index);
 
-    } else if (pieceUnicode === Knight.whiteKnightUnicode) {
-      moves = Knight.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
+    return validMoves;
+  }
 
-    } else if (pieceUnicode === Bishop.whiteBishopUnicode) {
-      moves = Bishop.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
+  checkIfGameOver() {
 
-    } else if (pieceUnicode === Bishop.blackBishopUnicode) {
-      moves = Bishop.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_BLACK);
+    let isGameOver = true;
 
-    } else if (pieceUnicode === Queen.blackQueenUnicode) {
-      moves = Queen.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_BLACK);
+    for (let i = 0; i < this.boardConfiguration.length; i++) {
 
-    } else if (pieceUnicode === Queen.whiteQueenUnicode) {
-      moves = Queen.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
+      const piece = this.boardConfiguration[i];
 
-    } else if (pieceUnicode === King.whiteKingUnicode) {
-      moves = King.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_WHITE);
+      if (piece.color === this.currentPlayer) {
 
-    } else if (pieceUnicode === King.blackKingUnicode) {
-      moves = King.getMoves(index, this.boardConfiguration, this.PIECE_COLOR_BLACK);
+        let validMoves = MovesUtil.getValidMoves(i, this.boardConfiguration);
+
+        validMoves = this.checkIfKingIsChecked(validMoves, i);
+
+        if (validMoves.length > 0) {
+          isGameOver = false;
+          break;
+        }
+      }
     }
 
-    if (pieceColor === this.currentPlayer) {
+    if (isGameOver) {
+      const id = this.currentPlayer === Constants.PLAYER_ONE ? 'white-winner-text' : 'black-winner-text'
 
-      this.removeValidMovesBackgroundColor();
+      document.getElementById(id)?.classList.add('winner-text-show');
 
-      this.validMoves = moves;
+      this.validMoves = [];
 
-      this.addValidMovesBackgroundColor();
+      this.boardConfiguration = this.originalBoardConfiguration;
 
     }
+  }
 
-    return moves;
+  checkIfKingIsChecked(validMoves: number[], sourceIndex: number): number[] {
+
+    let allMoves = new Set<number>();
+
+    validMoves.forEach(moveIndex => {
+
+      let destinationPiece = this.boardConfiguration[moveIndex];
+      let sourcePiece = this.boardConfiguration[sourceIndex];
+
+      this.mockMove(sourceIndex, moveIndex, this.boardConfiguration);
+
+      let oppositePlayerAllMoves = this.getOppositePlayerAllPieceMoves();
+
+      oppositePlayerAllMoves.forEach(move => {
+        allMoves.add(move);
+      })
+
+      this.boardConfiguration[sourceIndex] = sourcePiece;
+      this.boardConfiguration[moveIndex] = destinationPiece;
+
+      let index = this.blackKingIndex;
+
+      if (this.currentPlayer === Constants.PIECE_COLOR_WHITE) index = this.whiteKingIndex;
+
+      if (sourcePiece.type === Constants.KING) {
+        index = moveIndex;
+      }
+
+      if (allMoves.has(index)) {
+        validMoves = validMoves.filter(item => item !== moveIndex);
+      }
+
+      allMoves.clear();
+
+    });
+
+    return validMoves;
+
+  }
+
+  getOppositePlayerAllPieceMoves() {
+    let oppositePlayer = this.currentPlayer === Constants.PLAYER_ONE ? Constants.PLAYER_TWO : Constants.PLAYER_ONE;
+
+    let allMoves: number[] = [];
+    for (let i = 0; i < this.boardConfiguration.length; i++) {
+
+      const piece = this.boardConfiguration[i];
+
+      if (piece.color === oppositePlayer) {
+
+        let moves = MovesUtil.getValidMoves(i, this.boardConfiguration);
+
+        allMoves = allMoves.concat(moves);
+
+      }
+    }
+
+    return allMoves;
+  }
+
+
+  mockMove(sourceIndex: number, moveIndex: number, boardConfiguration: Piece[]) {
+
+    boardConfiguration[moveIndex] = boardConfiguration[sourceIndex];
+
+    boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '', index: -1 };
+
   }
 
   dragging(event: any) {
-
   }
 
   drop(event: any, destinationIndex: number) {
@@ -238,12 +243,28 @@ export class AppComponent implements OnInit {
 
       this.boardConfiguration[destinationIndex] = sourcePiece;
 
-      this.boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '' };
+      this.boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '', index: -1 };
 
-      this.currentPlayer = this.currentPlayer === this.playerOne ? this.playerTwo : this.playerOne;
+      this.switchPlayer();
 
-      this.player = this.currentPlayer === this.playerOne ? "Black Turn" : "White Turn";
+      this.updateKingsIndex(sourcePiece, destinationIndex);
+
+      this.checkIfGameOver();
     }
+  }
+
+  updateKingsIndex(sourcePiece: Piece, destinationIndex: number) {
+    if (sourcePiece.unicode === King.blackKingUnicode) {
+      this.blackKingIndex = destinationIndex;
+    }
+
+    if (sourcePiece.unicode === King.whiteKingUnicode) {
+      this.whiteKingIndex = destinationIndex;
+    }
+  }
+
+  switchPlayer() {
+    this.currentPlayer = this.currentPlayer === Constants.PLAYER_ONE ? Constants.PLAYER_TWO : Constants.PLAYER_ONE;
   }
 
   setDeadPieceContainerArray(piece: Piece) {
@@ -253,7 +274,7 @@ export class AppComponent implements OnInit {
 
     let arr = this.blackDeadPiecesContainer;
 
-    if (color === this.PIECE_COLOR_WHITE) {
+    if (color === Constants.PIECE_COLOR_WHITE) {
       arr = this.whiteDeadPiecesContainer;
     }
 
@@ -271,35 +292,35 @@ export class AppComponent implements OnInit {
     switch (type) {
 
       case "R":
-        pos = color === this.PIECE_COLOR_BLACK ? 0 : 1;
+        pos = color === Constants.PIECE_COLOR_BLACK ? 0 : 1;
         index = this.ROOK_START_INDEX[pos];
         this.ROOK_START_INDEX[pos] += 1;
         break;
 
       case "K":
-        pos = color === this.PIECE_COLOR_BLACK ? 0 : 1;
+        pos = color === Constants.PIECE_COLOR_BLACK ? 0 : 1;
         index = this.KNIGHT_START_INDEX[pos];
         this.KNIGHT_START_INDEX[pos] += 1;
         break;
 
       case "B":
-        pos = color === this.PIECE_COLOR_BLACK ? 0 : 1;
+        pos = color === Constants.PIECE_COLOR_BLACK ? 0 : 1;
         index = this.BISHOP_START_INDEX[pos];
         this.BISHOP_START_INDEX[pos] += 1;
         break;
 
       case "KG":
-        pos = color === this.PIECE_COLOR_BLACK ? 0 : 1;
+        pos = color === Constants.PIECE_COLOR_BLACK ? 0 : 1;
         index = this.KING_START_INDEX[pos];
         break;
 
       case "Q":
-        pos = color === this.PIECE_COLOR_BLACK ? 0 : 1;
+        pos = color === Constants.PIECE_COLOR_BLACK ? 0 : 1;
         index = this.QUEEN_START_INDEX[pos];
         break;
 
       case "P":
-        pos = color === this.PIECE_COLOR_BLACK ? 0 : 1;
+        pos = color === Constants.PIECE_COLOR_BLACK ? 0 : 1;
         index = this.PAWN_START_INDEX[pos];
         this.PAWN_START_INDEX[pos] += 1;
         break;

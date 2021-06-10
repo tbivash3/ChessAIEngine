@@ -6,6 +6,8 @@ export class King {
 
     static whiteKingUnicode = "\u2654";
 
+    static KING = 'KG';
+
     static relativeMovesPair = [[0, 1], [0, -1], [1, 0], [-1, 0], [1, 1], [-1, 1], [-1, -1], [1, -1]];
 
     static getMoves(index: number, board: Piece[], kingColor: string): number[] {

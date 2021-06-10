@@ -6,6 +6,8 @@ export class Rook {
 
     static whiteRookUnicode = "\u2656";
 
+    static ROOK = "R";
+
     static getMoves(index: number, board: Piece[], rookType: string): number[] {
         let moves: number[] = [];
 

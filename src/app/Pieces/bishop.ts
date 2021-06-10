@@ -6,6 +6,8 @@ export class Bishop {
 
     static whiteBishopUnicode = "\u2657";
 
+    static BISHOP = "B";
+
     static getMoves(index: number, board: Piece[], bishopColor: string): number[] {
 
         let moves: number[] = [];

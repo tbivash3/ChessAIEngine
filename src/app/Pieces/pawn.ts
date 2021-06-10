@@ -6,6 +6,8 @@ export class Pawn {
 
     static blackPawnUnicode = "\u265F";
 
+    static PAWN = "P";
+
     static getMoves(index: number, board: Piece[], pawnColor: string) {
         let moves: number[] = [];
 
@@ -42,6 +44,7 @@ export class Pawn {
         if (BoardUtil.getRowNumber(rightDiagonalMove) === row + columnAdjuster && piece.unicode !== '' && piece.color !== pawnColor) moves.push(rightDiagonalMove);
 
         // check if first row pawn move --- check front move for second position
+        piece = board[frontMove];
         if ((row === 6 && pawnColor === 'W') || (row === 1 && pawnColor === 'B')) {
             const secondFrontMove = frontMove + rowAdjuster;
             const secondPiece = board[secondFrontMove];
