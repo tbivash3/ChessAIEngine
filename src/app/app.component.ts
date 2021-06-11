@@ -1,4 +1,5 @@
 import { ArrayDataSource } from '@angular/cdk/collections';
+import { taggedTemplate } from '@angular/compiler/src/output/output_ast';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Constants } from './model/constants';
 import { Piece } from './model/piece';
@@ -38,6 +39,8 @@ export class AppComponent implements OnInit {
   recentMoveIndex = [-1, -1];
 
   currentBoxIndex = -1;
+
+
 
   constructor() { }
 
@@ -234,12 +237,14 @@ export class AppComponent implements OnInit {
 
       if (this.currentPlayer === Constants.PIECE_COLOR_WHITE) index = this.whiteKingIndex;
 
+      const tempIndex = index;
+
       if (sourcePiece.type === Constants.KING) {
         index = moveIndex;
       }
 
       if (allMoves.has(index)) {
-        this.addClassList('box' + index, 'king-check');
+        this.addClassList('box' + tempIndex, 'king-check');
         validMoves = validMoves.filter(item => item !== moveIndex);
       }
 
