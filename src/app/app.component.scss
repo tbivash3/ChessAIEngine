@@ -73,7 +73,7 @@ h1 {
     left: 37%;
     height: 1.5vw;
     width: 1.5vw;
-    background-color: #bd7a46;
+    background-color: #bdbda8;
     border-radius: 50%;
     display: none;
   }
@@ -105,4 +105,20 @@ h1 {
 
 .winner-text-show {
     display: block !important;
+}
+
+.drag-start {
+    background-color: #f6f669 !important;
+}
+
+.recent-move-source {
+    background-color: #baca2b !important;
+}
+
+.recent-move-destination {
+    background-color: #f6f669 !important;
+}
+
+.king-check {
+    background-color: #d32323 !important;
 }

@@ -35,6 +35,10 @@ export class AppComponent implements OnInit {
 
   currentPlayer = Constants.PLAYER_ONE;
 
+  recentMoveIndex = [-1, -1];
+
+  currentBoxIndex = -1;
+
   constructor() { }
 
   @ViewChild('board')
@@ -53,10 +57,6 @@ export class AppComponent implements OnInit {
     this.boardConfiguration = BoardUtil.getInitialBoardConfiguration();
   }
 
-  getBackgroundColor(index: number) {
-    return BoardUtil.getBackgroundColor(index);
-  }
-
   dragStart(event: any, index: number) {
     this.resetPreviousValidMoves();
 
@@ -65,15 +65,84 @@ export class AppComponent implements OnInit {
 
     if (pieceColor === this.currentPlayer) {
 
+      document.getElementById('box' + index)?.classList.add('drag-start');
+
       this.validMoves = this.getValidMoves(index);
       this.addValidMovesBackgroundColor();
-      event.dataTransfer.setData("source", index);
 
+      this.currentBoxIndex = index;
     } else {
 
       event.preventDefault();
 
     }
+  }
+
+  dragEnd(event: any) {
+    event.preventDefault();
+
+    this.removeValidMovesBackgroundColor();
+
+    document.getElementById('box' + this.currentBoxIndex)?.classList.remove('drag-start');
+  }
+
+  drop(event: any, destinationIndex: number) {
+
+    event.preventDefault();
+
+    const sourceIndex = this.currentBoxIndex;
+
+    let isDestinationIndexValid = this.checkIfDestinationIndexIsValid(destinationIndex);
+
+    if (isDestinationIndexValid) {
+
+      this.removeClassList('box' + this.blackKingIndex, 'king-check');
+
+      this.removeClassList('box' + this.whiteKingIndex, 'king-check');
+
+      const sourcePiece = this.boardConfiguration[sourceIndex];
+
+      const destinationPiece = this.boardConfiguration[destinationIndex];
+
+      if (destinationPiece.unicode !== '') {
+        this.setDeadPieceContainerArray(destinationPiece);
+      }
+
+      this.boardConfiguration[destinationIndex] = sourcePiece;
+
+      this.boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '', index: -1 };
+
+      this.highlightRecentMove(sourceIndex, destinationIndex);
+
+      this.switchPlayer();
+
+      this.updateKingsIndex(sourcePiece, destinationIndex);
+
+      this.checkIfGameOver();
+    }
+  }
+
+  highlightRecentMove(sourceIndex: any, destinationIndex: number) {
+
+    this.removeClassList('box' + this.recentMoveIndex[0], 'recent-move-source');
+    this.removeClassList('box' + this.recentMoveIndex[1], 'recent-move-destination');
+
+    this.recentMoveIndex = [sourceIndex, destinationIndex];
+
+    this.addClassList('box' + this.recentMoveIndex[0], 'recent-move-source');
+    this.addClassList('box' + this.recentMoveIndex[1], 'recent-move-destination');
+  }
+
+  addClassList(id: string, className: string) {
+    document.getElementById(id)?.classList.add(className);
+  }
+
+  removeClassList(id: string, className: string) {
+    document.getElementById(id)?.classList.remove(className);
+  }
+
+  allowDrop(event: any) {
+    event.preventDefault();
   }
 
   resetPreviousValidMoves() {
@@ -99,7 +168,7 @@ export class AppComponent implements OnInit {
 
     // }
 
-    validMoves = this.checkIfKingIsChecked(validMoves, index);
+    validMoves = this.validateAllGeneratedMoves(validMoves, index);
 
     return validMoves;
   }
@@ -116,7 +185,7 @@ export class AppComponent implements OnInit {
 
         let validMoves = MovesUtil.getValidMoves(i, this.boardConfiguration);
 
-        validMoves = this.checkIfKingIsChecked(validMoves, i);
+        validMoves = this.validateAllGeneratedMoves(validMoves, i);
 
         if (validMoves.length > 0) {
           isGameOver = false;
@@ -126,12 +195,10 @@ export class AppComponent implements OnInit {
     }
 
     if (isGameOver) {
-
-
       this.resetGame();
-
     }
   }
+
   resetGame() {
     const id = this.currentPlayer === Constants.PLAYER_ONE ? 'white-winner-text' : 'black-winner-text'
 
@@ -143,7 +210,7 @@ export class AppComponent implements OnInit {
   }
 
 
-  checkIfKingIsChecked(validMoves: number[], sourceIndex: number): number[] {
+  validateAllGeneratedMoves(validMoves: number[], sourceIndex: number): number[] {
 
     let allMoves = new Set<number>();
 
@@ -172,6 +239,7 @@ export class AppComponent implements OnInit {
       }
 
       if (allMoves.has(index)) {
+        this.addClassList('box' + index, 'king-check');
         validMoves = validMoves.filter(item => item !== moveIndex);
       }
 
@@ -210,41 +278,6 @@ export class AppComponent implements OnInit {
 
     boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '', index: -1 };
 
-  }
-
-  dragging(event: any) {
-  }
-
-  drop(event: any, destinationIndex: number) {
-
-    this.removeValidMovesBackgroundColor();
-
-    event.preventDefault();
-
-    let isDestinationIndexValid = this.checkIfDestinationIndexIsValid(destinationIndex);
-
-    if (isDestinationIndexValid) {
-
-      const sourceIndex = event.dataTransfer.getData("source");
-
-      const sourcePiece = this.boardConfiguration[sourceIndex];
-
-      const destinationPiece = this.boardConfiguration[destinationIndex];
-
-      if (destinationPiece.unicode !== '') {
-        this.setDeadPieceContainerArray(destinationPiece);
-      }
-
-      this.boardConfiguration[destinationIndex] = sourcePiece;
-
-      this.boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '', index: -1 };
-
-      this.switchPlayer();
-
-      this.updateKingsIndex(sourcePiece, destinationIndex);
-
-      this.checkIfGameOver();
-    }
   }
 
   updateKingsIndex(sourcePiece: Piece, destinationIndex: number) {
@@ -325,7 +358,7 @@ export class AppComponent implements OnInit {
     })
   }
 
-  allowDrop(event: any) {
-    event.preventDefault();
+  getBackgroundColor(index: number) {
+    return BoardUtil.getBackgroundColor(index);
   }
 }

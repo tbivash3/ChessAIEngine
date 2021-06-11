@@ -38,8 +38,9 @@
       <div (drop)="drop($event, i)" (dragover)="allowDrop($event)" id="{{ 'box' + i }}" class="box"
         [style.backgroundColor]="getBackgroundColor(i)">
         <span id="{{'dot' + i}}" class="dot"></span>
-        <div id="{{ 'piece' + i }}" draggable="true" (dragstart)="dragStart($event, i)" (drag)="dragging($event)"
-          class="piece">{{boardConfiguration[i].unicode}}</div>
+        <div id="{{ 'piece' + i }}" draggable="true" (dragstart)="dragStart($event, i)" (dragend)="dragEnd($event)"
+          class="piece">
+          {{boardConfiguration[i].unicode}}</div>
       </div>
     </ng-container>
 
