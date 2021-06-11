@@ -58,22 +58,28 @@ export class AppComponent implements OnInit {
   }
 
   dragStart(event: any, index: number) {
-
-    if (this.validMoves.length !== 0) {
-      this.validMoves = [];
-      this.removeValidMovesBackgroundColor();
-    }
+    this.resetPreviousValidMoves();
 
     const currentPiece = this.boardConfiguration[index];
-
     const pieceColor = currentPiece.color;
 
     if (pieceColor === this.currentPlayer) {
 
       this.validMoves = this.getValidMoves(index);
-
       this.addValidMovesBackgroundColor();
       event.dataTransfer.setData("source", index);
+
+    } else {
+
+      event.preventDefault();
+
+    }
+  }
+
+  resetPreviousValidMoves() {
+    if (this.validMoves.length !== 0) {
+      this.validMoves = [];
+      this.removeValidMovesBackgroundColor();
     }
   }
 
