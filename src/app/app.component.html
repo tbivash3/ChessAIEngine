@@ -32,8 +32,9 @@
   </div>
 
   <div id="board" #board>
-    <div id="black-winner-text" *ngIf="winner === 'B'">WINNER</div>
-    <div id="white-winner-text" *ngIf="winner === 'W'">WINNER</div>
+    <div id="black-winner-text" *ngIf="gameOverText === 'B'">WINNER</div>
+    <div id="white-winner-text" *ngIf="gameOverText === 'W'">WINNER</div>
+    <div id="black-winner-text" *ngIf="gameOverText === 'S'">STALEMATE</div>
     <ng-container *ngFor="let i of numOfBoxes">
       <div (drop)="drop($event, i)" (dragover)="allowDrop($event)" id="{{ 'box' + i }}" class="box"
         [ngStyle]="{'background-color': i === currentBoxIndex && i !== recentMoveIndex[0]? '#69edf6': getBackgroundColor(i)}"

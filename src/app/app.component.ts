@@ -5,6 +5,9 @@ import { King } from './Pieces/piece.king';
 
 import { BoardUtil } from './utility/board.util';
 import { MovesUtil } from './utility/moves.uti';
+import { MatDialog } from '@angular/material/dialog';
+import { GameOverDialogComponent } from './game-over-dialog/game-over-dialog.component';
+import { copyArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-root',
@@ -27,8 +30,6 @@ export class AppComponent implements OnInit {
 
   whiteDeadPiecesContainer = new Array<Piece>(16);
 
-  deadContainerIndex: number[][] = [];
-
   validMoves: number[] = [];
 
   validMovesSet: Set<number> = new Set();
@@ -39,20 +40,16 @@ export class AppComponent implements OnInit {
 
   currentBoxIndex = -1;
 
-  winner = '';
+  gameOverText = '';
 
-  constructor(private movesUtil: MovesUtil) { }
+  constructor(private movesUtil: MovesUtil, private gameOverDialog: MatDialog) { }
 
   @ViewChild('board')
   board!: ElementRef;
 
   ngOnInit(): void {
 
-    const emptyPiece = { color: '', type: '', unicode: '', index: -1 };
-
-    this.blackDeadPiecesContainer.fill(emptyPiece);
-
-    this.whiteDeadPiecesContainer.fill(emptyPiece);
+    this.resetGame();
 
     this.numOfBoxes = Array.from(Array(64).keys())
 
@@ -120,7 +117,7 @@ export class AppComponent implements OnInit {
 
   checkIfGameOver() {
 
-    let isGameOver = true;
+    let noOpponentMovesLeft = true;
 
     const opponentPlayer = this.currentPlayer === Constants.PLAYER_ONE ? Constants.PLAYER_TWO : Constants.PLAYER_ONE;
 
@@ -133,21 +130,76 @@ export class AppComponent implements OnInit {
         let validMoves = this.movesUtil.getValidMoves(i, opponentPlayer, this.blackKingIndex, this.whiteKingIndex, this.boardConfiguration);
 
         if (validMoves.length > 0) {
-          isGameOver = false;
+          noOpponentMovesLeft = false;
           break;
         }
       }
     }
 
-    if (isGameOver) {
-      this.resetGame();
+    if (noOpponentMovesLeft) {
+
+      let isOpponentKingInCheck = this.checkIsOpponentKingIsInCheck();
+
+      this.gameOverText = isOpponentKingInCheck ? this.currentPlayer : 'S';
+
+      let dialogRef = this.gameOverDialog.open(GameOverDialogComponent);
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.resetGame();
+        }
+      })
     }
+  }
+  checkIsOpponentKingIsInCheck() {
+
+    let isInCheck = false;
+
+    let opponentKingIndex = this.currentPlayer === Constants.PLAYER_ONE ? Constants.PLAYER_TWO : Constants.PLAYER_ONE;
+
+    for (let i = 0; i < this.boardConfiguration.length; i++) {
+
+      if (this.boardConfiguration[i].color === this.currentPlayer) {
+
+        let moves = this.movesUtil.getIndividualPieceMoves(i, this.boardConfiguration);
+
+        for (let move in moves) {
+
+          if (move === opponentKingIndex) {
+            isInCheck = true;
+            break;
+          }
+        }
+
+      }
+
+    }
+    return isInCheck;
   }
 
 
   resetGame() {
-    this.winner = this.currentPlayer;
     this.validMoves = [];
+    this.boardConfiguration = BoardUtil.getInitialBoardConfiguration();
+    this.blackKingIndex = Constants.BLACK_KING_INITIAL_INDEX;
+
+    this.whiteKingIndex = Constants.WHTE_KING_INITIAL_INDEX;
+
+    this.piecesStartIndexInDeadContainer = Constants.getPiecesStartIndex();
+
+    const emptyPiece = { color: '', type: '', unicode: '', index: -1 };
+
+    this.blackDeadPiecesContainer.fill(emptyPiece);
+
+    this.whiteDeadPiecesContainer.fill(emptyPiece);
+
+    this.currentPlayer = Constants.PLAYER_ONE;
+
+    this.recentMoveIndex = [-1, -1];
+
+    this.currentBoxIndex = -1;
+
+    this.gameOverText = '';
   }
 
   updateKingsIndex(sourcePiece: Piece, destinationIndex: number) {

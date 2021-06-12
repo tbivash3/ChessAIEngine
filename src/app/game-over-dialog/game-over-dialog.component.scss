@@ -1,0 +1,14 @@
+h1 {
+    padding: 10px;
+}
+
+#buttonContainer {
+   display: flex;
+   justify-content: center;
+   width: 100%;
+   gap: 10%;
+
+   button {
+       width: 40%;
+   }
+}

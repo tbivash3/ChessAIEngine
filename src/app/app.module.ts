@@ -7,16 +7,21 @@ import { BoardUtil } from './utility/board.util';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MovesUtil } from './utility/moves.uti';
+import { GameOverDialogComponent } from './game-over-dialog/game-over-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    GameOverDialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    DragDropModule,
-    NoopAnimationsModule
+    NoopAnimationsModule,
+    MatDialogModule,
+    MatButtonModule,
   ],
   providers: [BoardUtil, MovesUtil],
   bootstrap: [AppComponent]
