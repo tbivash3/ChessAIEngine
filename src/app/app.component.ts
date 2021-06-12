@@ -40,9 +40,7 @@ export class AppComponent implements OnInit {
 
   currentBoxIndex = -1;
 
-
-
-  constructor() { }
+  constructor(private movesUtil: MovesUtil) { }
 
   @ViewChild('board')
   board!: ElementRef;
@@ -61,19 +59,18 @@ export class AppComponent implements OnInit {
   }
 
   dragStart(event: any, index: number) {
-    this.resetPreviousValidMoves();
+    this.resetPreviousMoveChanges();
 
     const currentPiece = this.boardConfiguration[index];
     const pieceColor = currentPiece.color;
+    this.currentBoxIndex = index;
 
     if (pieceColor === this.currentPlayer) {
 
-      document.getElementById('box' + index)?.classList.add('drag-start');
-
-      this.validMoves = this.getValidMoves(index);
+      this.addCurrentBoxBackgroundColor();
+      this.validMoves = this.movesUtil.getValidMoves(index, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex, this.boardConfiguration);
       this.addValidMovesBackgroundColor();
 
-      this.currentBoxIndex = index;
     } else {
 
       event.preventDefault();
@@ -83,10 +80,7 @@ export class AppComponent implements OnInit {
 
   dragEnd(event: any) {
     event.preventDefault();
-
-    this.removeValidMovesBackgroundColor();
-
-    document.getElementById('box' + this.currentBoxIndex)?.classList.remove('drag-start');
+    this.resetPreviousMoveChanges();
   }
 
   drop(event: any, destinationIndex: number) {
@@ -99,30 +93,31 @@ export class AppComponent implements OnInit {
 
     if (isDestinationIndexValid) {
 
-      this.removeClassList('box' + this.blackKingIndex, 'king-check');
-
-      this.removeClassList('box' + this.whiteKingIndex, 'king-check');
-
       const sourcePiece = this.boardConfiguration[sourceIndex];
 
       const destinationPiece = this.boardConfiguration[destinationIndex];
-
-      if (destinationPiece.unicode !== '') {
-        this.setDeadPieceContainerArray(destinationPiece);
-      }
 
       this.boardConfiguration[destinationIndex] = sourcePiece;
 
       this.boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '', index: -1 };
 
-      this.highlightRecentMove(sourceIndex, destinationIndex);
+      this.setDeadPieceContainerArray(destinationPiece);
 
-      this.switchPlayer();
+      this.removeCheckBackgroundColor();
+
+      this.highlightRecentMove(sourceIndex, destinationIndex);
 
       this.updateKingsIndex(sourcePiece, destinationIndex);
 
       this.checkIfGameOver();
+
+      this.switchPlayer();
     }
+  }
+
+  removeCheckBackgroundColor() {
+    this.removeClassList('box' + this.blackKingIndex, 'king-check');
+    this.removeClassList('box' + this.whiteKingIndex, 'king-check');
   }
 
   highlightRecentMove(sourceIndex: any, destinationIndex: number) {
@@ -148,47 +143,19 @@ export class AppComponent implements OnInit {
     event.preventDefault();
   }
 
-  resetPreviousValidMoves() {
-    if (this.validMoves.length !== 0) {
-      this.validMoves = [];
-      this.removeValidMovesBackgroundColor();
-    }
-  }
-
-  getValidMoves(index: number): number[] {
-
-    let pieceInfo = this.boardConfiguration[index];
-
-    let validMoves = MovesUtil.getValidMoves(index, this.boardConfiguration);
-
-    // if (pieceInfo.color === this.currentPlayer) {
-
-    //   this.removeValidMovesBackgroundColor();
-
-    //   this.validMoves = validMoves;
-
-    //   this.addValidMovesBackgroundColor();
-
-    // }
-
-    validMoves = this.validateAllGeneratedMoves(validMoves, index);
-
-    return validMoves;
-  }
-
   checkIfGameOver() {
 
     let isGameOver = true;
+
+    const opponentPlayer = this.currentPlayer === Constants.PLAYER_ONE ? Constants.PLAYER_TWO : Constants.PLAYER_ONE;
 
     for (let i = 0; i < this.boardConfiguration.length; i++) {
 
       const piece = this.boardConfiguration[i];
 
-      if (piece.color === this.currentPlayer) {
+      if (piece.color == opponentPlayer) {
 
-        let validMoves = MovesUtil.getValidMoves(i, this.boardConfiguration);
-
-        validMoves = this.validateAllGeneratedMoves(validMoves, i);
+        let validMoves = this.movesUtil.getValidMoves(i, opponentPlayer, this.blackKingIndex, this.whiteKingIndex, this.boardConfiguration);
 
         if (validMoves.length > 0) {
           isGameOver = false;
@@ -202,87 +169,13 @@ export class AppComponent implements OnInit {
     }
   }
 
+
   resetGame() {
-    const id = this.currentPlayer === Constants.PLAYER_ONE ? 'white-winner-text' : 'black-winner-text'
+    const id = this.currentPlayer === Constants.PLAYER_TWO ? 'white-winner-text' : 'black-winner-text'
 
     document.getElementById(id)?.classList.add('winner-text-show');
 
     this.validMoves = [];
-
-    //this.boardConfiguration = BoardUtil.getInitialBoardConfiguration();
-  }
-
-
-  validateAllGeneratedMoves(validMoves: number[], sourceIndex: number): number[] {
-
-    let allMoves = new Set<number>();
-
-    validMoves.forEach(moveIndex => {
-
-      let destinationPiece = this.boardConfiguration[moveIndex];
-      let sourcePiece = this.boardConfiguration[sourceIndex];
-
-      this.mockMove(sourceIndex, moveIndex, this.boardConfiguration);
-
-      let oppositePlayerAllMoves = this.getOppositePlayerAllPieceMoves();
-
-      oppositePlayerAllMoves.forEach(move => {
-        allMoves.add(move);
-      })
-
-      this.boardConfiguration[sourceIndex] = sourcePiece;
-      this.boardConfiguration[moveIndex] = destinationPiece;
-
-      let index = this.blackKingIndex;
-
-      if (this.currentPlayer === Constants.PIECE_COLOR_WHITE) index = this.whiteKingIndex;
-
-      const tempIndex = index;
-
-      if (sourcePiece.type === Constants.KING) {
-        index = moveIndex;
-      }
-
-      if (allMoves.has(index)) {
-        this.addClassList('box' + tempIndex, 'king-check');
-        validMoves = validMoves.filter(item => item !== moveIndex);
-      }
-
-      allMoves.clear();
-
-    });
-
-    return validMoves;
-
-  }
-
-  getOppositePlayerAllPieceMoves() {
-    let oppositePlayer = this.currentPlayer === Constants.PLAYER_ONE ? Constants.PLAYER_TWO : Constants.PLAYER_ONE;
-
-    let allMoves: number[] = [];
-    for (let i = 0; i < this.boardConfiguration.length; i++) {
-
-      const piece = this.boardConfiguration[i];
-
-      if (piece.color === oppositePlayer) {
-
-        let moves = MovesUtil.getValidMoves(i, this.boardConfiguration);
-
-        allMoves = allMoves.concat(moves);
-
-      }
-    }
-
-    return allMoves;
-  }
-
-
-  mockMove(sourceIndex: number, moveIndex: number, boardConfiguration: Piece[]) {
-
-    boardConfiguration[moveIndex] = boardConfiguration[sourceIndex];
-
-    boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '', index: -1 };
-
   }
 
   updateKingsIndex(sourcePiece: Piece, destinationIndex: number) {
@@ -300,22 +193,23 @@ export class AppComponent implements OnInit {
   }
 
   setDeadPieceContainerArray(piece: Piece) {
+    if (piece.unicode !== '') {
+      const color = piece.color;
+      const type = piece.type;
 
-    const color = piece.color;
-    const type = piece.type;
+      let arr = this.blackDeadPiecesContainer;
 
-    let arr = this.blackDeadPiecesContainer;
+      if (color === Constants.PIECE_COLOR_WHITE) {
+        arr = this.whiteDeadPiecesContainer;
+      }
 
-    if (color === Constants.PIECE_COLOR_WHITE) {
-      arr = this.whiteDeadPiecesContainer;
+      let index = this.getAndUpdatePieceIndex(type);
+
+      arr[index] = piece;
     }
-
-    let index = this.getPieceIndex(type, color);
-
-    arr[index] = piece;
   }
 
-  getPieceIndex(type: string, color: string) {
+  getAndUpdatePieceIndex(type: string) {
 
     let index = -1;
 
@@ -347,12 +241,15 @@ export class AppComponent implements OnInit {
     return isValid;
   }
 
+  resetPreviousMoveChanges() {
+    this.removeValidMovesBackgroundColor();
+    this.resetCurrentBoxBackgroundColor();
+  }
+
   addValidMovesBackgroundColor() {
     this.validMoves.forEach(index => {
-
       const id = 'dot' + index;
       document.getElementById(id)?.classList.add('validMove');
-
     })
   }
 
@@ -361,6 +258,16 @@ export class AppComponent implements OnInit {
       const id = 'dot' + index;
       document.getElementById(id)?.classList.remove('validMove');
     })
+
+    this.validMoves = [];
+  }
+
+  resetCurrentBoxBackgroundColor() {
+    this.removeClassList('box' + this.currentBoxIndex, 'drag-start');
+  }
+
+  addCurrentBoxBackgroundColor() {
+    this.addClassList('box' + this.currentBoxIndex, 'drag-start');
   }
 
   getBackgroundColor(index: number) {

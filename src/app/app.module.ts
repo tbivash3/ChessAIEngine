@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BoardUtil } from './utility/board.util';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MovesUtil } from './utility/moves.uti';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     DragDropModule,
     NoopAnimationsModule
   ],
-  providers: [BoardUtil],
+  providers: [BoardUtil, MovesUtil],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
