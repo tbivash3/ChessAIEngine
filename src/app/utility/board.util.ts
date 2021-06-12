@@ -24,7 +24,7 @@ export class BoardUtil {
             const type = map.get(i)?.[1] || '';
             const color = map.get(i)?.[2] || ''
 
-            const piece: Piece = { unicode, type, color, index: i };
+            const piece: Piece = { unicode, type, color };
 
             boardConfiguration.push(piece);
         }

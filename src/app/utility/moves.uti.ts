@@ -110,7 +110,7 @@ export class MovesUtil {
 
     mockMove(sourceIndex: number, moveIndex: number, boardConfiguration: Piece[]) {
         boardConfiguration[moveIndex] = boardConfiguration[sourceIndex];
-        boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '', index: -1 };
+        boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '' };
     }
 }
 

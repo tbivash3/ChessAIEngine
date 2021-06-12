@@ -1,9 +1,6 @@
-import { ArrayDataSource } from '@angular/cdk/collections';
-import { taggedTemplate } from '@angular/compiler/src/output/output_ast';
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Constants } from './model/constants';
 import { Piece } from './model/piece';
-import { Bishop } from './Pieces/piece.bishop';
 import { King } from './Pieces/piece.king';
 
 import { BoardUtil } from './utility/board.util';
@@ -34,11 +31,15 @@ export class AppComponent implements OnInit {
 
   validMoves: number[] = [];
 
+  validMovesSet: Set<number> = new Set();
+
   currentPlayer = Constants.PLAYER_ONE;
 
   recentMoveIndex = [-1, -1];
 
   currentBoxIndex = -1;
+
+  winner = '';
 
   constructor(private movesUtil: MovesUtil) { }
 
@@ -59,28 +60,22 @@ export class AppComponent implements OnInit {
   }
 
   dragStart(event: any, index: number) {
-    this.resetPreviousMoveChanges();
+    this.resetValidMovesSet();
 
     const currentPiece = this.boardConfiguration[index];
     const pieceColor = currentPiece.color;
-    this.currentBoxIndex = index;
 
     if (pieceColor === this.currentPlayer) {
 
-      this.addCurrentBoxBackgroundColor();
+      this.currentBoxIndex = index;
       this.validMoves = this.movesUtil.getValidMoves(index, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex, this.boardConfiguration);
-      this.addValidMovesBackgroundColor();
+      this.validMovesSet = new Set(this.validMoves);
 
     } else {
 
       event.preventDefault();
 
     }
-  }
-
-  dragEnd(event: any) {
-    event.preventDefault();
-    this.resetPreviousMoveChanges();
   }
 
   drop(event: any, destinationIndex: number) {
@@ -99,13 +94,11 @@ export class AppComponent implements OnInit {
 
       this.boardConfiguration[destinationIndex] = sourcePiece;
 
-      this.boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '', index: -1 };
+      this.boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '' };
+
+      this.recentMoveIndex = [sourceIndex, destinationIndex];
 
       this.setDeadPieceContainerArray(destinationPiece);
-
-      this.removeCheckBackgroundColor();
-
-      this.highlightRecentMove(sourceIndex, destinationIndex);
 
       this.updateKingsIndex(sourcePiece, destinationIndex);
 
@@ -115,32 +108,14 @@ export class AppComponent implements OnInit {
     }
   }
 
-  removeCheckBackgroundColor() {
-    this.removeClassList('box' + this.blackKingIndex, 'king-check');
-    this.removeClassList('box' + this.whiteKingIndex, 'king-check');
-  }
-
-  highlightRecentMove(sourceIndex: any, destinationIndex: number) {
-
-    this.removeClassList('box' + this.recentMoveIndex[0], 'recent-move-source');
-    this.removeClassList('box' + this.recentMoveIndex[1], 'recent-move-destination');
-
-    this.recentMoveIndex = [sourceIndex, destinationIndex];
-
-    this.addClassList('box' + this.recentMoveIndex[0], 'recent-move-source');
-    this.addClassList('box' + this.recentMoveIndex[1], 'recent-move-destination');
-  }
-
-  addClassList(id: string, className: string) {
-    document.getElementById(id)?.classList.add(className);
-  }
-
-  removeClassList(id: string, className: string) {
-    document.getElementById(id)?.classList.remove(className);
-  }
-
   allowDrop(event: any) {
     event.preventDefault();
+  }
+
+  dragEnd(event: any) {
+    event.preventDefault();
+    this.resetValidMovesSet();
+    this.currentBoxIndex = -1;
   }
 
   checkIfGameOver() {
@@ -171,10 +146,7 @@ export class AppComponent implements OnInit {
 
 
   resetGame() {
-    const id = this.currentPlayer === Constants.PLAYER_TWO ? 'white-winner-text' : 'black-winner-text'
-
-    document.getElementById(id)?.classList.add('winner-text-show');
-
+    this.winner = this.currentPlayer;
     this.validMoves = [];
   }
 
@@ -241,33 +213,8 @@ export class AppComponent implements OnInit {
     return isValid;
   }
 
-  resetPreviousMoveChanges() {
-    this.removeValidMovesBackgroundColor();
-    this.resetCurrentBoxBackgroundColor();
-  }
-
-  addValidMovesBackgroundColor() {
-    this.validMoves.forEach(index => {
-      const id = 'dot' + index;
-      document.getElementById(id)?.classList.add('validMove');
-    })
-  }
-
-  removeValidMovesBackgroundColor() {
-    this.validMoves.forEach(index => {
-      const id = 'dot' + index;
-      document.getElementById(id)?.classList.remove('validMove');
-    })
-
-    this.validMoves = [];
-  }
-
-  resetCurrentBoxBackgroundColor() {
-    this.removeClassList('box' + this.currentBoxIndex, 'drag-start');
-  }
-
-  addCurrentBoxBackgroundColor() {
-    this.addClassList('box' + this.currentBoxIndex, 'drag-start');
+  resetValidMovesSet() {
+    this.validMovesSet.clear();
   }
 
   getBackgroundColor(index: number) {

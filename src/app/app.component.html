@@ -32,12 +32,14 @@
   </div>
 
   <div id="board" #board>
-    <div id="black-winner-text">WINNER</div>
-    <div id="white-winner-text">WINNER</div>
+    <div id="black-winner-text" *ngIf="winner === 'B'">WINNER</div>
+    <div id="white-winner-text" *ngIf="winner === 'W'">WINNER</div>
     <ng-container *ngFor="let i of numOfBoxes">
       <div (drop)="drop($event, i)" (dragover)="allowDrop($event)" id="{{ 'box' + i }}" class="box"
-        [style.backgroundColor]="getBackgroundColor(i)">
-        <span id="{{'dot' + i}}" class="dot"></span>
+        [ngStyle]="{'background-color': i === currentBoxIndex && i !== recentMoveIndex[0]? '#69edf6': getBackgroundColor(i)}"
+        [ngStyle]="{'background-color': i === recentMoveIndex[0] ? '#baca2b': getBackgroundColor(i)}"
+        [ngStyle]="{'background-color': i === recentMoveIndex[1] ? '#f6f669': getBackgroundColor(i)}">
+        <span id="{{'dot' + i}}" class="dot" *ngIf="validMovesSet.has(i)"></span>
         <div id="{{ 'piece' + i }}" draggable="true" (dragstart)="dragStart($event, i)" (dragend)="dragEnd($event)"
           class="piece">
           {{boardConfiguration[i].unicode}}</div>

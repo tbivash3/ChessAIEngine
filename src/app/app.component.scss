@@ -76,13 +76,7 @@ h1 {
     width: 1.5vw;
     background-color: #bdbda8;
     border-radius: 50%;
-    display: none;
   }
-
-.validMove {
-    opacity: 1 !important;
-    display: inline-block;
-}
 
 #black-winner-text {
     position: absolute;
@@ -101,25 +95,4 @@ h1 {
     font-size: 4vw;
     color: #69d5f0;
     z-index: 1;
-    display: none;
-}
-
-.winner-text-show {
-    display: block !important;
-}
-
-.drag-start {
-    background-color: #f6f669 !important;
-}
-
-.recent-move-source {
-    background-color: #baca2b !important;
-}
-
-.recent-move-destination {
-    background-color: #f6f669 !important;
-}
-
-.king-check {
-    background-color: #d32323 !important;
 }
