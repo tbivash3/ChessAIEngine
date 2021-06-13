@@ -28,7 +28,7 @@ export class MovesUtil {
         return validMoves;
     }
 
-    getIndividualPieceMoves(index: number, boardConfiguration: Piece[]) {
+    getIndividualPieceMoves(index: number, boardConfiguration: Piece[]): number[] {
 
         const pieceInfo = boardConfiguration[index];
 

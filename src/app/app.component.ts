@@ -140,6 +140,8 @@ export class AppComponent implements OnInit {
 
       let isOpponentKingInCheck = this.checkIsOpponentKingIsInCheck();
 
+      console.log(isOpponentKingInCheck);
+
       this.gameOverText = isOpponentKingInCheck ? this.currentPlayer : 'S';
 
       let dialogRef = this.gameOverDialog.open(GameOverDialogComponent);
@@ -151,26 +153,35 @@ export class AppComponent implements OnInit {
       })
     }
   }
+
   checkIsOpponentKingIsInCheck() {
 
     let isInCheck = false;
 
-    let opponentKingIndex = this.currentPlayer === Constants.PLAYER_ONE ? Constants.PLAYER_TWO : Constants.PLAYER_ONE;
+    let opponentKingIndex = this.currentPlayer === Constants.PLAYER_ONE ? this.whiteKingIndex : this.blackKingIndex;
 
     for (let i = 0; i < this.boardConfiguration.length; i++) {
+
+      let isKingInCheck = false;
 
       if (this.boardConfiguration[i].color === this.currentPlayer) {
 
         let moves = this.movesUtil.getIndividualPieceMoves(i, this.boardConfiguration);
 
-        for (let move in moves) {
+        for (let j = 0; j < moves.length; j++) {
 
-          if (move === opponentKingIndex) {
-            isInCheck = true;
+          if (moves[j] === opponentKingIndex) {
+            isKingInCheck = true;
             break;
           }
+
         }
 
+      }
+
+      if (isKingInCheck) {
+        isInCheck = true;
+        break;
       }
 
     }
