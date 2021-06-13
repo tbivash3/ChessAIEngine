@@ -54,6 +54,39 @@ export class AppComponent implements OnInit {
     this.numOfBoxes = Array.from(Array(64).keys())
 
     this.boardConfiguration = BoardUtil.getInitialBoardConfiguration();
+
+    this.startGame();
+  }
+
+  async startGame() {
+
+    await new Promise((r) => setTimeout(r, 1000));
+
+    let allBlackIndex: number[] = [];
+
+    for (let i = 0; i < this.boardConfiguration.length; i++) {
+      if (this.boardConfiguration[i].color === Constants.PIECE_COLOR_BLACK) {
+        allBlackIndex.push(i);
+      }
+    }
+
+    let sourceIndex = Math.floor(Math.random() * allBlackIndex.length);
+
+    sourceIndex = allBlackIndex[sourceIndex];
+
+    let moves = this.movesUtil.getValidMoves(sourceIndex, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex, this.boardConfiguration);
+
+    if (moves.length !== 0) {
+
+      let destinationIndex = Math.floor(Math.random() * moves.length);
+
+      destinationIndex = moves[destinationIndex];
+
+      this.updateBoard(sourceIndex, destinationIndex);
+
+    } else {
+      this.startGame();
+    }
   }
 
   dragStart(event: any, index: number) {
@@ -75,34 +108,39 @@ export class AppComponent implements OnInit {
     }
   }
 
+
+
   drop(event: any, destinationIndex: number) {
 
     event.preventDefault();
-
-    const sourceIndex = this.currentBoxIndex;
-
     let isDestinationIndexValid = this.checkIfDestinationIndexIsValid(destinationIndex);
 
     if (isDestinationIndexValid) {
-
-      const sourcePiece = this.boardConfiguration[sourceIndex];
-
-      const destinationPiece = this.boardConfiguration[destinationIndex];
-
-      this.boardConfiguration[destinationIndex] = sourcePiece;
-
-      this.boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '' };
-
-      this.recentMoveIndex = [sourceIndex, destinationIndex];
-
-      this.setDeadPieceContainerArray(destinationPiece);
-
-      this.updateKingsIndex(sourcePiece, destinationIndex);
-
-      this.checkIfGameOver();
-
-      this.switchPlayer();
+      this.updateBoard(this.currentBoxIndex, destinationIndex);
+      this.startGame();
     }
+  }
+
+  updateBoard(sourceIndex: number, destinationIndex: number) {
+
+    const sourcePiece = this.boardConfiguration[sourceIndex];
+
+    const destinationPiece = this.boardConfiguration[destinationIndex];
+
+    this.boardConfiguration[destinationIndex] = sourcePiece;
+
+    this.boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '' };
+
+    this.recentMoveIndex = [sourceIndex, destinationIndex];
+
+    this.setDeadPieceContainerArray(destinationPiece);
+
+    this.updateKingsIndex(sourcePiece, destinationIndex);
+
+    this.checkIfGameOver();
+
+    this.switchPlayer();
+
   }
 
   allowDrop(event: any) {
