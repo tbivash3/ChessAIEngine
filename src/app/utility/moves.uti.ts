@@ -1,12 +1,11 @@
 import { Constants } from "../model/constants";
 import { Piece } from "../model/piece";
-import { Bishop } from "../Pieces/piece.bishop";
-import { King } from "../Pieces/piece.king";
-import { Knight } from "../Pieces/piece.knight.";
-import { Pawn } from "../Pieces/piece.pawn";
-import { Queen } from "../Pieces/piece.queen";
-import { Rook } from "../Pieces/piece.rook";
-
+import { Bishop } from "../pieces/piece.bishop";
+import { King } from "../pieces/piece.king";
+import { Knight } from "../pieces/piece.knight.";
+import { Pawn } from "../pieces/piece.pawn";
+import { Queen } from "../pieces/piece.queen";
+import { Rook } from "../pieces/piece.rook";
 
 export class MovesUtil {
 

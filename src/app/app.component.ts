@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Constants } from './model/constants';
 import { Piece } from './model/piece';
-import { King } from './Pieces/piece.king';
+import { King } from './pieces/piece.king';
 
 import { BoardUtil } from './utility/board.util';
 import { MovesUtil } from './utility/moves.uti';
 import { MatDialog } from '@angular/material/dialog';
 import { GameOverDialogComponent } from './game-over-dialog/game-over-dialog.component';
-import { copyArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-root',
@@ -55,12 +54,10 @@ export class AppComponent implements OnInit {
 
     this.boardConfiguration = BoardUtil.getInitialBoardConfiguration();
 
-    this.startGame();
+    this.botTurn();
   }
 
-  async startGame() {
-
-    await new Promise((r) => setTimeout(r, 1000));
+  async botTurn() {
 
     let allBlackIndex: number[] = [];
 
@@ -78,15 +75,30 @@ export class AppComponent implements OnInit {
 
     if (moves.length !== 0) {
 
-      let destinationIndex = Math.floor(Math.random() * moves.length);
-
-      destinationIndex = moves[destinationIndex];
+      let destinationIndex = this.findDestinationIndex(moves);
 
       this.updateBoard(sourceIndex, destinationIndex);
 
     } else {
-      this.startGame();
+      this.botTurn();
     }
+  }
+
+  findDestinationIndex(moves: number[]) {
+
+    let destinationIndex = moves[0];
+
+    for (let i = 0; i < moves.length; i++) {
+
+      if (this.boardConfiguration[moves[i]].unicode !== '') {
+        destinationIndex = moves[i];
+        break;
+      }
+
+    }
+
+    return destinationIndex;
+
   }
 
   dragStart(event: any, index: number) {
@@ -117,7 +129,7 @@ export class AppComponent implements OnInit {
 
     if (isDestinationIndexValid) {
       this.updateBoard(this.currentBoxIndex, destinationIndex);
-      this.startGame();
+      this.botTurn();
     }
   }
 
@@ -174,11 +186,9 @@ export class AppComponent implements OnInit {
       }
     }
 
+    let isOpponentKingInCheck = this.checkIsOpponentKingIsInCheck();
+
     if (noOpponentMovesLeft) {
-
-      let isOpponentKingInCheck = this.checkIsOpponentKingIsInCheck();
-
-      console.log(isOpponentKingInCheck);
 
       this.gameOverText = isOpponentKingInCheck ? this.currentPlayer : 'S';
 
