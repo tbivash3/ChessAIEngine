@@ -2,9 +2,9 @@ import { Piece } from "../model/piece";
 import { BoardUtil } from "../utility/board.util";
 
 export class Rook {
-    static blackRookUnicode = "\u265C";
+    static blackUnicode = "\u265C";
 
-    static whiteRookUnicode = "\u2656";
+    static whiteUnicode = "\u2656";
 
     static ROOK = "R";
 

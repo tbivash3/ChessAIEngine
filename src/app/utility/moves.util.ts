@@ -37,22 +37,22 @@ export class MovesUtil {
 
         let pieceColor = pieceInfo.color;
 
-        if (pieceUnicode === Pawn.blackPawnUnicode || pieceUnicode === Pawn.whitePawnUnicode) {
+        if (pieceUnicode === Pawn.blackUnicode || pieceUnicode === Pawn.whiteUnicode) {
             moves = Pawn.getMoves(index, boardConfiguration, pieceColor);
 
-        } else if (pieceUnicode === Rook.blackRookUnicode || pieceUnicode === Rook.whiteRookUnicode) {
+        } else if (pieceUnicode === Rook.blackUnicode || pieceUnicode === Rook.whiteUnicode) {
             moves = Rook.getMoves(index, boardConfiguration, pieceColor);
 
-        } else if (pieceUnicode === Knight.blackKnightUnicode || pieceUnicode === Knight.whiteKnightUnicode) {
+        } else if (pieceUnicode === Knight.blackUnicode || pieceUnicode === Knight.whiteUnicode) {
             moves = Knight.getMoves(index, boardConfiguration, pieceColor);
 
-        } else if (pieceUnicode === Bishop.blackBishopUnicode || pieceUnicode === Bishop.whiteBishopUnicode) {
+        } else if (pieceUnicode === Bishop.blackUnicode || pieceUnicode === Bishop.whiteUnicode) {
             moves = Bishop.getMoves(index, boardConfiguration, pieceColor);
 
-        } else if (pieceUnicode === Queen.blackQueenUnicode || pieceUnicode === Queen.whiteQueenUnicode) {
+        } else if (pieceUnicode === Queen.blackUnicode || pieceUnicode === Queen.whiteUnicode) {
             moves = Queen.getMoves(index, boardConfiguration, pieceColor);
 
-        } else if (pieceUnicode === King.blackKingUnicode || pieceUnicode === King.whiteKingUnicode) {
+        } else if (pieceUnicode === King.blackUnicode || pieceUnicode === King.whiteUnicode) {
             moves = King.getMoves(index, boardConfiguration, pieceColor);
         }
 
@@ -109,7 +109,7 @@ export class MovesUtil {
 
     mockMove(sourceIndex: number, moveIndex: number, boardConfiguration: Piece[]) {
         boardConfiguration[moveIndex] = boardConfiguration[sourceIndex];
-        boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '' };
+        boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '', value: 0 };
     }
 }
 

@@ -2,9 +2,9 @@ import { Piece } from "../model/piece";
 import { BoardUtil } from "../utility/board.util";
 
 export class Bishop {
-    static blackBishopUnicode = "\u265D";
+    static blackUnicode = "\u265D";
 
-    static whiteBishopUnicode = "\u2657";
+    static whiteUnicode = "\u2657";
 
     static BISHOP = "B";
 

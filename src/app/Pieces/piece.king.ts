@@ -2,9 +2,9 @@ import { Piece } from "../model/piece";
 import { BoardUtil } from "../utility/board.util";
 
 export class King {
-    static blackKingUnicode = "\u265A";
+    static blackUnicode = "\u265A";
 
-    static whiteKingUnicode = "\u2654";
+    static whiteUnicode = "\u2654";
 
     static KING = 'KG';
 

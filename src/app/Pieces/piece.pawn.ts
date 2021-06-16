@@ -2,11 +2,13 @@ import { Piece } from "../model/piece";
 import { BoardUtil } from "../utility/board.util";
 
 export class Pawn {
-    static whitePawnUnicode = "\u2659";
+    static whiteUnicode = "\u2659";
 
-    static blackPawnUnicode = "\u265F";
+    static blackUnicode = "\u265F";
 
     static PAWN = "P";
+
+    static value = 1;
 
     static getMoves(index: number, board: Piece[], pawnColor: string) {
         let moves: number[] = [];

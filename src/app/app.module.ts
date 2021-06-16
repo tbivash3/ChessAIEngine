@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { BoardUtil } from './utility/board.util';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MovesUtil } from './utility/moves.uti';
+import { MovesUtil } from './utility/moves.util';
 import { GameOverDialogComponent } from './game-over-dialog/game-over-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';

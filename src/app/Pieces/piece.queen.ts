@@ -3,9 +3,9 @@ import { Bishop } from "./piece.bishop";
 import { Rook } from "./piece.rook";
 
 export class Queen {
-    static blackQueenUnicode = "\u265B";
+    static blackUnicode = "\u265B";
 
-    static whiteQueenUnicode = "\u2655";
+    static whiteUnicode = "\u2655";
 
     static QUEEN = "Q";
 

@@ -4,7 +4,7 @@ import { Piece } from './model/piece';
 import { King } from './pieces/piece.king';
 
 import { BoardUtil } from './utility/board.util';
-import { MovesUtil } from './utility/moves.uti';
+import { MovesUtil } from './utility/moves.util';
 import { MatDialog } from '@angular/material/dialog';
 import { GameOverDialogComponent } from './game-over-dialog/game-over-dialog.component';
 
@@ -54,10 +54,10 @@ export class AppComponent implements OnInit {
 
     this.boardConfiguration = BoardUtil.getInitialBoardConfiguration();
 
-    this.botTurn();
+    // this.botTurn();
   }
 
-  async botTurn() {
+  botTurn() {
 
     let allBlackIndex: number[] = [];
 
@@ -120,8 +120,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-
-
   drop(event: any, destinationIndex: number) {
 
     event.preventDefault();
@@ -129,7 +127,7 @@ export class AppComponent implements OnInit {
 
     if (isDestinationIndexValid) {
       this.updateBoard(this.currentBoxIndex, destinationIndex);
-      this.botTurn();
+      //this.botTurn();
     }
   }
 
@@ -141,7 +139,7 @@ export class AppComponent implements OnInit {
 
     this.boardConfiguration[destinationIndex] = sourcePiece;
 
-    this.boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '' };
+    this.boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '', value: 0 };
 
     this.recentMoveIndex = [sourceIndex, destinationIndex];
 
@@ -246,7 +244,7 @@ export class AppComponent implements OnInit {
 
     this.piecesStartIndexInDeadContainer = Constants.getPiecesStartIndex();
 
-    const emptyPiece = { color: '', type: '', unicode: '', index: -1 };
+    const emptyPiece = { color: '', type: '', unicode: '', index: -1, value: 0 };
 
     this.blackDeadPiecesContainer.fill(emptyPiece);
 
@@ -262,11 +260,11 @@ export class AppComponent implements OnInit {
   }
 
   updateKingsIndex(sourcePiece: Piece, destinationIndex: number) {
-    if (sourcePiece.unicode === King.blackKingUnicode) {
+    if (sourcePiece.unicode === King.blackUnicode) {
       this.blackKingIndex = destinationIndex;
     }
 
-    if (sourcePiece.unicode === King.whiteKingUnicode) {
+    if (sourcePiece.unicode === King.whiteUnicode) {
       this.whiteKingIndex = destinationIndex;
     }
   }
