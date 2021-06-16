@@ -33,24 +33,27 @@ export class Pawn {
 
         let piece = board[index];
 
-        // check front move
-        piece = board[frontMove];
-        if (piece.unicode === '') moves.push(frontMove);
+        if (frontMove >= 0 && frontMove <= 63) {
 
-        //check left diagonal move
-        piece = board[leftDiagonalMove];
-        if (BoardUtil.getRowNumber(leftDiagonalMove) === row + columnAdjuster && piece.unicode !== '' && piece.color !== pawnColor) moves.push(leftDiagonalMove);
+            // check front move
+            piece = board[frontMove];
+            if (piece.unicode === '') moves.push(frontMove);
 
-        //check right diagonal move
-        piece = board[rightDiagonalMove];
-        if (BoardUtil.getRowNumber(rightDiagonalMove) === row + columnAdjuster && piece.unicode !== '' && piece.color !== pawnColor) moves.push(rightDiagonalMove);
+            //check left diagonal move
+            piece = board[leftDiagonalMove];
+            if (BoardUtil.getRowNumber(leftDiagonalMove) === row + columnAdjuster && piece.unicode !== '' && piece.color !== pawnColor) moves.push(leftDiagonalMove);
 
-        // check if first row pawn move --- check front move for second position
-        piece = board[frontMove];
-        if ((row === 6 && pawnColor === 'W') || (row === 1 && pawnColor === 'B')) {
-            const secondFrontMove = frontMove + rowAdjuster;
-            const secondPiece = board[secondFrontMove];
-            if (secondPiece.unicode === '' && piece.unicode === '') moves.push(secondFrontMove);
+            //check right diagonal move
+            piece = board[rightDiagonalMove];
+            if (BoardUtil.getRowNumber(rightDiagonalMove) === row + columnAdjuster && piece.unicode !== '' && piece.color !== pawnColor) moves.push(rightDiagonalMove);
+
+            // check if first row pawn move --- check front move for second position
+            piece = board[frontMove];
+            if ((row === 6 && pawnColor === 'W') || (row === 1 && pawnColor === 'B')) {
+                const secondFrontMove = frontMove + rowAdjuster;
+                const secondPiece = board[secondFrontMove];
+                if (secondPiece.unicode === '' && piece.unicode === '') moves.push(secondFrontMove);
+            }
         }
 
     }

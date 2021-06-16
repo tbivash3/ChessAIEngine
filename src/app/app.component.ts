@@ -25,9 +25,9 @@ export class AppComponent implements OnInit {
 
   boardConfiguration: Piece[] = [];
 
-  blackDeadPiecesContainer = new Array<Piece>(16);
+  blackDeadPiecesContainer = new Array<String>(16);
 
-  whiteDeadPiecesContainer = new Array<Piece>(16);
+  whiteDeadPiecesContainer = new Array<String>(16);
 
   validMoves: number[] = [];
 
@@ -48,13 +48,13 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.resetGame();
+    this.initGameConfig();
 
     this.numOfBoxes = Array.from(Array(64).keys())
 
     this.boardConfiguration = BoardUtil.getInitialBoardConfiguration();
 
-    // this.botTurn();
+    this.botTurn();
   }
 
   botTurn() {
@@ -127,17 +127,17 @@ export class AppComponent implements OnInit {
 
     if (isDestinationIndexValid) {
       this.updateBoard(this.currentBoxIndex, destinationIndex);
-      //this.botTurn();
+      this.botTurn();
     }
   }
 
   updateBoard(sourceIndex: number, destinationIndex: number) {
 
-    const sourcePiece = this.boardConfiguration[sourceIndex];
+    const sourcePieceUnicode = this.boardConfiguration[sourceIndex].unicode;
 
     const destinationPiece = this.boardConfiguration[destinationIndex];
 
-    this.boardConfiguration[destinationIndex] = sourcePiece;
+    this.boardConfiguration[destinationIndex] = this.boardConfiguration[sourceIndex];
 
     this.boardConfiguration[sourceIndex] = { unicode: '', color: '', type: '', value: 0 };
 
@@ -145,7 +145,7 @@ export class AppComponent implements OnInit {
 
     this.setDeadPieceContainerArray(destinationPiece);
 
-    this.updateKingsIndex(sourcePiece, destinationIndex);
+    this.updateKingsIndex(sourcePieceUnicode, destinationIndex);
 
     this.checkIfGameOver();
 
@@ -164,6 +164,8 @@ export class AppComponent implements OnInit {
   }
 
   checkIfGameOver() {
+
+    console.log(this.boardConfiguration);
 
     let noOpponentMovesLeft = true;
 
@@ -194,7 +196,7 @@ export class AppComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          this.resetGame();
+          this.initGameConfig();
         }
       })
     }
@@ -235,20 +237,20 @@ export class AppComponent implements OnInit {
   }
 
 
-  resetGame() {
+  initGameConfig() {
     this.validMoves = [];
+
     this.boardConfiguration = BoardUtil.getInitialBoardConfiguration();
+
     this.blackKingIndex = Constants.BLACK_KING_INITIAL_INDEX;
 
     this.whiteKingIndex = Constants.WHTE_KING_INITIAL_INDEX;
 
     this.piecesStartIndexInDeadContainer = Constants.getPiecesStartIndex();
 
-    const emptyPiece = { color: '', type: '', unicode: '', index: -1, value: 0 };
+    this.blackDeadPiecesContainer.fill('');
 
-    this.blackDeadPiecesContainer.fill(emptyPiece);
-
-    this.whiteDeadPiecesContainer.fill(emptyPiece);
+    this.whiteDeadPiecesContainer.fill('');
 
     this.currentPlayer = Constants.PLAYER_ONE;
 
@@ -259,12 +261,12 @@ export class AppComponent implements OnInit {
     this.gameOverText = '';
   }
 
-  updateKingsIndex(sourcePiece: Piece, destinationIndex: number) {
-    if (sourcePiece.unicode === King.blackUnicode) {
+  updateKingsIndex(sourcePieceUnicode: string, destinationIndex: number) {
+    if (sourcePieceUnicode === King.blackUnicode) {
       this.blackKingIndex = destinationIndex;
     }
 
-    if (sourcePiece.unicode === King.whiteUnicode) {
+    if (sourcePieceUnicode === King.whiteUnicode) {
       this.whiteKingIndex = destinationIndex;
     }
   }
@@ -286,7 +288,7 @@ export class AppComponent implements OnInit {
 
       let index = this.getAndUpdatePieceIndex(type);
 
-      arr[index] = piece;
+      arr[index] = piece.unicode;
     }
   }
 
