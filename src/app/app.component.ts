@@ -58,7 +58,9 @@ export class AppComponent implements AfterViewInit, OnInit {
     this.botTurn();
   }
 
-  botTurn() {
+  async botTurn() {
+
+    await new Promise((r) => setTimeout(r, 100));
 
     let optimalMove = this.minimax.findBestMove(this.boardConfiguration, 4, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex);
 
