@@ -1,33 +1,11 @@
 <div id="container">
 
   <div class="deadPieceContainer">
-    <div class="rookContainer deadContainer">
-      <span>{{blackDeadPiecesContainer[0]}}</span>
-      <span>{{blackDeadPiecesContainer[1]}}</span>
+    <div class="deadContainer">
+      <span *ngFor="let i of blackDeadPiecesContainer">{{i}}</span>
     </div>
-    <div class="knightContainer deadContainer">
-      <span>{{blackDeadPiecesContainer[2]}}</span>
-      <span>{{blackDeadPiecesContainer[3]}}</span>
-    </div>
-    <div class="bishopContainer deadContainer">
-      <span>{{blackDeadPiecesContainer[4]}}</span>
-      <span>{{blackDeadPiecesContainer[5]}}</span>
-    </div>
-    <div class="kingContainer deadContainer">
-      <span>{{blackDeadPiecesContainer[6]}}</span>
-    </div>
-    <div class="queenContainer deadContainer">
-      <span>{{blackDeadPiecesContainer[7]}}</span>
-    </div>
-    <div class="pawnContainer deadContainer">
-      <span>{{blackDeadPiecesContainer[8]}}</span>
-      <span>{{blackDeadPiecesContainer[9]}}</span>
-      <span>{{blackDeadPiecesContainer[10]}}</span>
-      <span>{{blackDeadPiecesContainer[11]}}</span>
-      <span>{{blackDeadPiecesContainer[12]}}</span>
-      <span>{{blackDeadPiecesContainer[13]}}</span>
-      <span>{{blackDeadPiecesContainer[14]}}</span>
-      <span>{{blackDeadPiecesContainer[15]}}</span>
+    <div class="deadContainer">
+      <span *ngFor="let i of whiteDeadPiecesContainer">{{i}}</span>
     </div>
   </div>
 
@@ -46,39 +24,19 @@
           {{boardConfiguration[i].unicode}}</div>
       </div>
     </ng-container>
-
-
   </div>
 
-  <div class="deadPieceContainer">
-    <div class="rookContainer deadContainer rightSide">
-      <span>{{whiteDeadPiecesContainer[0]}}</span>
-      <span>{{whiteDeadPiecesContainer[1]}}</span>
+  <div id="game-info">
+    <div class="game-mode-select">
+      <h1>Play vs...</h1>
+      <button mat-flat-button color="accent" (click)="selectPlayMode(0)"
+        [disabled]="playMode === 0 || gameStarted === 1">Computer</button>
+      <button mat-flat-button color="accent" (click)="selectPlayMode(1)"
+        [disabled]="playMode === 1 || gameStarted === 1">Friend</button>
     </div>
-    <div class="knightContainer deadContainer rightSide">
-      <span>{{whiteDeadPiecesContainer[2]}}</span>
-      <span>{{whiteDeadPiecesContainer[3]}}</span>
-    </div>
-    <div class="bishopContainer deadContainer rightSide">
-      <span>{{whiteDeadPiecesContainer[4]}}</span>
-      <span>{{whiteDeadPiecesContainer[5]}}</span>
-    </div>
-    <div class="kingContainer deadContainer rightSide">
-      <span>{{whiteDeadPiecesContainer[6]}}</span>
-    </div>
-    <div class="queenContainer deadContainer rightSide">
-      <span>{{whiteDeadPiecesContainer[7]}}</span>
-    </div>
-    <div class="pawnContainer deadContainer rightSide">
-      <span>{{whiteDeadPiecesContainer[8]}}</span>
-      <span>{{whiteDeadPiecesContainer[9]}}</span>
-      <span>{{whiteDeadPiecesContainer[10]}}</span>
-      <span>{{whiteDeadPiecesContainer[11]}}</span>
-      <span>{{whiteDeadPiecesContainer[12]}}</span>
-      <span>{{whiteDeadPiecesContainer[13]}}</span>
-      <span>{{whiteDeadPiecesContainer[14]}}</span>
-      <span>{{whiteDeadPiecesContainer[15]}}</span>
-    </div>
+
+    <button mat-flat-button color="primary" class="play-button" (click)="startGame()"
+      [disabled]="playMode === -1 || gameStarted === 1">Play</button>
   </div>
 
 </div>

@@ -7,7 +7,6 @@ import { BoardUtil } from './utility/board.util';
 import { MovesUtil } from './utility/moves.util';
 import { MatDialog } from '@angular/material/dialog';
 import { GameOverDialogComponent } from './game-over-dialog/game-over-dialog.component';
-import { AfterViewInit } from '@angular/core';
 import { Minimax } from './utility/minimax';
 
 @Component({
@@ -15,21 +14,19 @@ import { Minimax } from './utility/minimax';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterViewInit, OnInit {
+export class AppComponent implements OnInit {
 
   blackKingIndex = Constants.BLACK_KING_INITIAL_INDEX;
 
   whiteKingIndex = Constants.WHTE_KING_INITIAL_INDEX;
 
-  piecesStartIndexInDeadContainer = Constants.getPiecesStartIndex();
-
   numOfBoxes: number[] = [];
 
   boardConfiguration: Piece[] = [];
 
-  blackDeadPiecesContainer = new Array<String>(16);
+  blackDeadPiecesContainer: string[] = [];
 
-  whiteDeadPiecesContainer = new Array<String>(16);
+  whiteDeadPiecesContainer: string[] = [];
 
   validMoves: number[] = [];
 
@@ -43,6 +40,10 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   gameOverText = '';
 
+  playMode = -1;
+
+  gameStarted = 0;
+
   constructor(private movesUtil: MovesUtil, private gameOverDialog: MatDialog, private minimax: Minimax) { }
 
   @ViewChild('board')
@@ -52,10 +53,6 @@ export class AppComponent implements AfterViewInit, OnInit {
     this.initGameConfig();
     this.numOfBoxes = Array.from(Array(64).keys())
     this.boardConfiguration = BoardUtil.getInitialBoardConfiguration();
-  }
-
-  ngAfterViewInit(): void {
-    this.botTurn();
   }
 
   async botTurn() {
@@ -110,7 +107,9 @@ export class AppComponent implements AfterViewInit, OnInit {
 
     if (isDestinationIndexValid) {
       this.updateBoard(this.currentBoxIndex, destinationIndex);
-      this.botTurn();
+
+      if (this.playMode === 0)
+        this.botTurn();
     }
   }
 
@@ -144,6 +143,19 @@ export class AppComponent implements AfterViewInit, OnInit {
     event.preventDefault();
     this.resetValidMovesSet();
     this.currentBoxIndex = -1;
+  }
+
+  selectPlayMode(mode: number) {
+    this.playMode = mode;
+  }
+
+  startGame() {
+
+    this.gameStarted = 1;
+    if (this.playMode === 0) {
+      this.botTurn();
+    }
+
   }
 
   checkIfGameOver() {
@@ -244,19 +256,21 @@ export class AppComponent implements AfterViewInit, OnInit {
 
     this.whiteKingIndex = Constants.WHTE_KING_INITIAL_INDEX;
 
-    this.piecesStartIndexInDeadContainer = Constants.getPiecesStartIndex();
-
-    this.blackDeadPiecesContainer.fill('');
-
-    this.whiteDeadPiecesContainer.fill('');
-
     this.currentPlayer = Constants.PLAYER_ONE;
+
+    this.blackDeadPiecesContainer = [];
+
+    this.whiteDeadPiecesContainer = [];
 
     this.recentMoveIndex = [-1, -1];
 
     this.currentBoxIndex = -1;
 
     this.gameOverText = '';
+
+    this.playMode = -1;
+
+    this.gameStarted = 0;
   }
 
   updateKingsIndex(sourcePieceUnicode: string, destinationIndex: number) {
@@ -276,7 +290,6 @@ export class AppComponent implements AfterViewInit, OnInit {
   setDeadPieceContainerArray(piece: Piece) {
     if (piece.unicode !== '') {
       const color = piece.color;
-      const type = piece.type;
 
       let arr = this.blackDeadPiecesContainer;
 
@@ -284,29 +297,8 @@ export class AppComponent implements AfterViewInit, OnInit {
         arr = this.whiteDeadPiecesContainer;
       }
 
-      let index = this.getAndUpdatePieceIndex(type);
-
-      arr[index] = piece.unicode;
+      arr.push(piece.unicode);
     }
-  }
-
-  getAndUpdatePieceIndex(type: string) {
-
-    let index = -1;
-
-    let pos = 0;
-
-    const indexArr = this.piecesStartIndexInDeadContainer.get(type) || [0, 1];
-
-    if (this.currentPlayer === Constants.PLAYER_TWO) pos = 1;
-
-    index = indexArr[pos];
-
-    indexArr[pos]++;
-
-    this.piecesStartIndexInDeadContainer.set(type, indexArr);
-
-    return index;
   }
 
   checkIfDestinationIndexIsValid(destinationIndex: number): boolean {

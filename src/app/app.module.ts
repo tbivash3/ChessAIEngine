@@ -9,7 +9,8 @@ import { MovesUtil } from './utility/moves.util';
 import { GameOverDialogComponent } from './game-over-dialog/game-over-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { Minimax } from './utility/minimax';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,8 @@ import { Minimax } from './utility/minimax';
     NoopAnimationsModule,
     MatDialogModule,
     MatButtonModule,
+    MatSelectModule,
+    MatButtonToggleModule
   ],
   providers: [BoardUtil, MovesUtil],
   bootstrap: [AppComponent]
