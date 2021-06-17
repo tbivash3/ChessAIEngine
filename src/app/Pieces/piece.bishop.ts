@@ -8,7 +8,7 @@ export class Bishop {
 
     static BISHOP = "B";
 
-    static value = "10";
+    static value = "30";
 
     static getMoves(index: number, board: Piece[], bishopColor: string): number[] {
 

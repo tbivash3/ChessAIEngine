@@ -19,7 +19,7 @@ export class Minimax {
 
     minimax(board: Piece[], depth: number, isMaximizingPlayer: boolean, maximizingPlayer: string, blackKingIndex: number, whiteKingIndex: number, mainCall: boolean): number {
 
-        if (depth === 0) return this.getStaticBoardValue(board, maximizingPlayer);
+        if (depth === 0) return this.getStaticBoardValue(board, maximizingPlayer, blackKingIndex, whiteKingIndex);
 
         if (isMaximizingPlayer) {
 
@@ -129,16 +129,22 @@ export class Minimax {
 
     }
 
-    getStaticBoardValue(board: Piece[], currentPlayer: string): number {
+    getStaticBoardValue(board: Piece[], currentPlayer: string, blackKingIndex: number, whiteKingIndex: number): number {
 
         let value = 0;
 
         for (let i = 0; i < board.length; i++) {
 
-            if (currentPlayer === board[i].color) {
-                value += board[i].value;
-            } else {
-                value -= board[i].value;
+            if (board[i].unicode !== '') {
+
+                let totalMoves = this.movesUtil.getValidMoves(i, board[i].color, blackKingIndex, whiteKingIndex, board);
+
+                if (currentPlayer === board[i].color) {
+                    value = value + board[i].value + totalMoves.length;
+                } else {
+                    value = value - board[i].value - totalMoves.length;
+                }
+
             }
 
         }

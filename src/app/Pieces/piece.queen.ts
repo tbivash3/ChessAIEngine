@@ -9,7 +9,7 @@ export class Queen {
 
     static QUEEN = "Q";
 
-    static value = "500";
+    static value = "100";
 
     static getMoves(index: number, board: Piece[], QueenType: string): number[] {
 

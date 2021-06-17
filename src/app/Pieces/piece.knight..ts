@@ -8,7 +8,7 @@ export class Knight {
 
     static KNIGHT = "K";
 
-    static value = "5";
+    static value = "30";
 
     static relativeMovesPair = [[1, 2], [2, 1], [1, -2], [2, -1], [-1, 2], [-1, -2], [-2, 1], [-2, -1]];
 
