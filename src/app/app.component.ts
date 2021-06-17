@@ -6,7 +6,6 @@ import { King } from './pieces/piece.king';
 import { BoardUtil } from './utility/board.util';
 import { MovesUtil } from './utility/moves.util';
 import { MatDialog } from '@angular/material/dialog';
-import { GameOverDialogComponent } from './game-over-dialog/game-over-dialog.component';
 import { Minimax } from './utility/minimax';
 
 @Component({
@@ -50,7 +49,6 @@ export class AppComponent implements OnInit {
   board!: ElementRef;
 
   ngOnInit() {
-    this.initGameConfig();
     this.numOfBoxes = Array.from(Array(64).keys())
     this.boardConfiguration = BoardUtil.getInitialBoardConfiguration();
   }
@@ -59,7 +57,7 @@ export class AppComponent implements OnInit {
 
     await new Promise((r) => setTimeout(r, 100));
 
-    let optimalMove = this.minimax.findBestMove(this.boardConfiguration, 5, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex);
+    let optimalMove = this.minimax.findBestMove(this.boardConfiguration, 4, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex);
 
     this.updateBoard(optimalMove[0], optimalMove[1]);
   }
@@ -151,6 +149,7 @@ export class AppComponent implements OnInit {
 
   startGame() {
 
+    this.initGameConfig();
     this.gameStarted = 1;
     if (this.playMode === 0) {
       this.botTurn();
@@ -186,13 +185,9 @@ export class AppComponent implements OnInit {
 
       this.gameOverText = isOpponentKingInCheck ? this.currentPlayer : 'S';
 
-      let dialogRef = this.gameOverDialog.open(GameOverDialogComponent);
+      this.playMode = -1;
 
-      dialogRef.afterClosed().subscribe(result => {
-        if (result) {
-          this.initGameConfig();
-        }
-      })
+      this.gameStarted = 0;
     }
   }
 
@@ -267,10 +262,6 @@ export class AppComponent implements OnInit {
     this.currentBoxIndex = -1;
 
     this.gameOverText = '';
-
-    this.playMode = -1;
-
-    this.gameStarted = 0;
   }
 
   updateKingsIndex(sourcePieceUnicode: string, destinationIndex: number) {
