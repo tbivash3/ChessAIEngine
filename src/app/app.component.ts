@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
 
   validMovesSet: Set<number> = new Set();
 
-  currentPlayer = Constants.PLAYER_ONE;
+  currentPlayer = '';
 
   recentMoveIndex = [-1, -1];
 
@@ -42,6 +42,8 @@ export class AppComponent implements OnInit {
   playMode = -1;
 
   gameStarted = 0;
+
+  pieceSelectedIndex = -1;
 
   constructor(private movesUtil: MovesUtil, private gameOverDialog: MatDialog, private minimax: Minimax) { }
 
@@ -87,9 +89,7 @@ export class AppComponent implements OnInit {
 
     if (pieceColor === this.currentPlayer) {
 
-      this.currentBoxIndex = index;
-      this.validMoves = this.movesUtil.getValidMoves(index, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex, this.boardConfiguration);
-      this.validMovesSet = new Set(this.validMoves);
+      this.selectPiece(index);
 
     } else {
 
@@ -98,9 +98,27 @@ export class AppComponent implements OnInit {
     }
   }
 
-  drop(event: any, destinationIndex: number) {
+  selectPiece(index: number) {
+    this.resetValidMovesSet();
 
+    const currentPiece = this.boardConfiguration[index];
+    const pieceColor = currentPiece.color;
+
+    if (pieceColor === this.currentPlayer) {
+
+      this.currentBoxIndex = index;
+      this.validMoves = this.movesUtil.getValidMoves(index, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex, this.boardConfiguration);
+      this.validMovesSet = new Set(this.validMoves);
+
+    }
+  }
+
+  drop(event: any, destinationIndex: number) {
     event.preventDefault();
+    this.executeMove(destinationIndex);
+  }
+
+  executeMove(destinationIndex: number) {
     let isDestinationIndexValid = this.checkIfDestinationIndexIsValid(destinationIndex);
 
     if (isDestinationIndexValid) {
@@ -109,6 +127,14 @@ export class AppComponent implements OnInit {
       if (this.playMode === 0)
         this.botTurn();
     }
+  }
+
+  pieceClick(index: number) {
+
+    this.executeMove(index);
+
+    this.selectPiece(index);
+
   }
 
   updateBoard(sourceIndex: number, destinationIndex: number) {
@@ -139,6 +165,10 @@ export class AppComponent implements OnInit {
 
   dragEnd(event: any) {
     event.preventDefault();
+    this.resetLastMove();
+  }
+
+  resetLastMove() {
     this.resetValidMovesSet();
     this.currentBoxIndex = -1;
   }

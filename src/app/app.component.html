@@ -17,7 +17,8 @@
       <div (drop)="drop($event, i)" (dragover)="allowDrop($event)" id="{{ 'box' + i }}" class="box"
         [ngStyle]="{'background-color': i === currentBoxIndex && i !== recentMoveIndex[0]? '#69edf6': getBackgroundColor(i)}"
         [ngStyle]="{'background-color': i === recentMoveIndex[0] ? '#baca2b': getBackgroundColor(i)}"
-        [ngStyle]="{'background-color': i === recentMoveIndex[1] ? '#f6f669': getBackgroundColor(i)}">
+        [ngStyle]="{'background-color': i === recentMoveIndex[1] ? '#f6f669': getBackgroundColor(i)}"
+        (click)="pieceClick(i)">
         <span id="{{'dot' + i}}" class="dot" *ngIf="validMovesSet.has(i)"></span>
         <div id="{{ 'piece' + i }}" draggable="true" (dragstart)="dragStart($event, i)" (dragend)="dragEnd($event)"
           class="piece">
