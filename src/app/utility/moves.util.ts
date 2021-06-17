@@ -8,7 +8,6 @@ import { Queen } from "../pieces/piece.queen";
 import { Rook } from "../pieces/piece.rook";
 
 export class MovesUtil {
-
     constructor() { }
 
     getValidMoves(index: number, currentPlayer: string, blackKingIndex: number, whiteKingIndex: number, boardConfiguration: Piece[]): number[] {

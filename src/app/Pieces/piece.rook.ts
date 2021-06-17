@@ -8,6 +8,8 @@ export class Rook {
 
     static ROOK = "R";
 
+    static value = "20";
+
     static getMoves(index: number, board: Piece[], rookType: string): number[] {
         let moves: number[] = [];
 

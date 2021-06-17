@@ -9,6 +9,8 @@ export class Queen {
 
     static QUEEN = "Q";
 
+    static value = "500";
+
     static getMoves(index: number, board: Piece[], QueenType: string): number[] {
 
         let rookMoves = Rook.getMoves(index, board, QueenType);

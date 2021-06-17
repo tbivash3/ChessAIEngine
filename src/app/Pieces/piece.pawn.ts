@@ -8,7 +8,7 @@ export class Pawn {
 
     static PAWN = "P";
 
-    static value = 1;
+    static value = "2";
 
     static getMoves(index: number, board: Piece[], pawnColor: string) {
         let moves: number[] = [];

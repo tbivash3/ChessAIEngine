@@ -8,6 +8,8 @@ export class Knight {
 
     static KNIGHT = "K";
 
+    static value = "5";
+
     static relativeMovesPair = [[1, 2], [2, 1], [1, -2], [2, -1], [-1, 2], [-1, -2], [-2, 1], [-2, -1]];
 
     static getMoves(index: number, board: Piece[], knightColor: string): number[] {

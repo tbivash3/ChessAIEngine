@@ -39,31 +39,31 @@ export class BoardUtil {
             board.set(i, ['', '', '']);
         }
 
-        board.set(0, [Rook.blackUnicode, Constants.ROOK, Constants.PIECE_COLOR_BLACK]);
-        board.set(1, [Knight.blackUnicode, Constants.KNIGHT, Constants.PIECE_COLOR_BLACK]);
-        board.set(2, [Bishop.blackUnicode, Constants.BISHOP, Constants.PIECE_COLOR_BLACK]);
-        board.set(3, [Queen.blackUnicode, Constants.QUEEN, Constants.PIECE_COLOR_BLACK]);
-        board.set(4, [King.blackUnicode, Constants.KING, Constants.PIECE_COLOR_BLACK]);
-        board.set(5, [Bishop.blackUnicode, Constants.BISHOP, Constants.PIECE_COLOR_BLACK]);
-        board.set(6, [Knight.blackUnicode, Constants.KNIGHT, Constants.PIECE_COLOR_BLACK]);
-        board.set(7, [Rook.blackUnicode, Constants.ROOK, Constants.PIECE_COLOR_BLACK]);
+        board.set(0, [Rook.blackUnicode, Constants.ROOK, Constants.PIECE_COLOR_BLACK, Rook.value]);
+        board.set(1, [Knight.blackUnicode, Constants.KNIGHT, Constants.PIECE_COLOR_BLACK, Knight.value]);
+        board.set(2, [Bishop.blackUnicode, Constants.BISHOP, Constants.PIECE_COLOR_BLACK, Bishop.value]);
+        board.set(3, [Queen.blackUnicode, Constants.QUEEN, Constants.PIECE_COLOR_BLACK, Queen.value]);
+        board.set(4, [King.blackUnicode, Constants.KING, Constants.PIECE_COLOR_BLACK, King.value]);
+        board.set(5, [Bishop.blackUnicode, Constants.BISHOP, Constants.PIECE_COLOR_BLACK, Bishop.value]);
+        board.set(6, [Knight.blackUnicode, Constants.KNIGHT, Constants.PIECE_COLOR_BLACK, Knight.value]);
+        board.set(7, [Rook.blackUnicode, Constants.ROOK, Constants.PIECE_COLOR_BLACK, Rook.value]);
 
         for (let i = 8; i < 16; i++) {
-            board.set(i, [Pawn.blackUnicode, Constants.PAWN, Constants.PIECE_COLOR_BLACK]);
+            board.set(i, [Pawn.blackUnicode, Constants.PAWN, Constants.PIECE_COLOR_BLACK, Pawn.value]);
         }
 
         for (let i = 48; i < 56; i++) {
-            board.set(i, [Pawn.whiteUnicode, Constants.PAWN, Constants.PIECE_COLOR_WHITE]);
+            board.set(i, [Pawn.whiteUnicode, Constants.PAWN, Constants.PIECE_COLOR_WHITE, Pawn.value]);
         }
 
-        board.set(56, [Rook.whiteUnicode, Constants.ROOK, Constants.PIECE_COLOR_WHITE]);
-        board.set(57, [Knight.whiteUnicode, Constants.KNIGHT, Constants.PIECE_COLOR_WHITE]);
-        board.set(58, [Bishop.whiteUnicode, Constants.BISHOP, Constants.PIECE_COLOR_WHITE]);
-        board.set(59, [Queen.whiteUnicode, Constants.QUEEN, Constants.PIECE_COLOR_WHITE]);
-        board.set(60, [King.whiteUnicode, Constants.KING, Constants.PIECE_COLOR_WHITE]);
-        board.set(61, [Bishop.whiteUnicode, Constants.BISHOP, Constants.PIECE_COLOR_WHITE]);
-        board.set(62, [Knight.whiteUnicode, Constants.KNIGHT, Constants.PIECE_COLOR_WHITE]);
-        board.set(63, [Rook.whiteUnicode, Constants.ROOK, Constants.PIECE_COLOR_WHITE]);
+        board.set(56, [Rook.whiteUnicode, Constants.ROOK, Constants.PIECE_COLOR_WHITE, Rook.value]);
+        board.set(57, [Knight.whiteUnicode, Constants.KNIGHT, Constants.PIECE_COLOR_WHITE, Knight.value]);
+        board.set(58, [Bishop.whiteUnicode, Constants.BISHOP, Constants.PIECE_COLOR_WHITE, Bishop.value]);
+        board.set(59, [Queen.whiteUnicode, Constants.QUEEN, Constants.PIECE_COLOR_WHITE, Queen.value]);
+        board.set(60, [King.whiteUnicode, Constants.KING, Constants.PIECE_COLOR_WHITE, King.value]);
+        board.set(61, [Bishop.whiteUnicode, Constants.BISHOP, Constants.PIECE_COLOR_WHITE, Bishop.value]);
+        board.set(62, [Knight.whiteUnicode, Constants.KNIGHT, Constants.PIECE_COLOR_WHITE, Knight.value]);
+        board.set(63, [Rook.whiteUnicode, Constants.ROOK, Constants.PIECE_COLOR_WHITE, Rook.value]);
 
         return board;
     }

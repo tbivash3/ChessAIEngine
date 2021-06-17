@@ -8,6 +8,8 @@ export class King {
 
     static KING = 'KG';
 
+    static value = "900";
+
     static relativeMovesPair = [[0, 1], [0, -1], [1, 0], [-1, 0], [1, 1], [-1, 1], [-1, -1], [1, -1]];
 
     static getMoves(index: number, board: Piece[], kingColor: string): number[] {

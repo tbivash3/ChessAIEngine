@@ -7,13 +7,15 @@ import { BoardUtil } from './utility/board.util';
 import { MovesUtil } from './utility/moves.util';
 import { MatDialog } from '@angular/material/dialog';
 import { GameOverDialogComponent } from './game-over-dialog/game-over-dialog.component';
+import { AfterViewInit } from '@angular/core';
+import { Minimax } from './utility/minimax';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements AfterViewInit, OnInit {
 
   blackKingIndex = Constants.BLACK_KING_INITIAL_INDEX;
 
@@ -41,49 +43,50 @@ export class AppComponent implements OnInit {
 
   gameOverText = '';
 
-  constructor(private movesUtil: MovesUtil, private gameOverDialog: MatDialog) { }
+  constructor(private movesUtil: MovesUtil, private gameOverDialog: MatDialog, private minimax: Minimax) { }
 
   @ViewChild('board')
   board!: ElementRef;
 
-  ngOnInit(): void {
-
+  ngOnInit() {
     this.initGameConfig();
-
     this.numOfBoxes = Array.from(Array(64).keys())
-
     this.boardConfiguration = BoardUtil.getInitialBoardConfiguration();
+  }
 
+  ngAfterViewInit(): void {
     this.botTurn();
   }
 
-  async botTurn() {
+  botTurn() {
 
-    await new Promise((r) => setTimeout(r, 0));
+    let optimalMove = this.minimax.findBestMove(this.boardConfiguration, 3, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex);
 
-    let allBlackIndex: number[] = [];
+    this.updateBoard(optimalMove[0], optimalMove[1]);
 
-    for (let i = 0; i < this.boardConfiguration.length; i++) {
-      if (this.boardConfiguration[i].color === Constants.PIECE_COLOR_BLACK) {
-        allBlackIndex.push(i);
-      }
-    }
+    // let allBlackIndex: number[] = [];
 
-    let sourceIndex = Math.floor(Math.random() * allBlackIndex.length);
+    // for (let i = 0; i < this.boardConfiguration.length; i++) {
+    //   if (this.boardConfiguration[i].color === Constants.PIECE_COLOR_BLACK) {
+    //     allBlackIndex.push(i);
+    //   }
+    // }
 
-    sourceIndex = allBlackIndex[sourceIndex];
+    // let sourceIndex = Math.floor(Math.random() * allBlackIndex.length);
 
-    let moves = this.movesUtil.getValidMoves(sourceIndex, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex, this.boardConfiguration);
+    // sourceIndex = allBlackIndex[sourceIndex];
 
-    if (moves.length !== 0) {
+    // let moves = this.movesUtil.getValidMoves(sourceIndex, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex, this.boardConfiguration);
 
-      let destinationIndex = this.findDestinationIndex(moves);
+    // if (moves.length !== 0) {
 
-      this.updateBoard(sourceIndex, destinationIndex);
+    //   let destinationIndex = this.findDestinationIndex(moves);
 
-    } else {
-      this.botTurn();
-    }
+    //   this.updateBoard(sourceIndex, destinationIndex);
+
+    // } else {
+    //   this.botTurn();
+    // }
   }
 
   findDestinationIndex(moves: number[]) {
@@ -185,9 +188,11 @@ export class AppComponent implements OnInit {
       }
     }
 
-    let isOpponentKingInCheck = this.checkIsOpponentKingIsInCheck();
+    let areOnlyKingsLeft = this.checkIfOnlyKingsLeft();
 
-    if (noOpponentMovesLeft) {
+    if (noOpponentMovesLeft || (!noOpponentMovesLeft && areOnlyKingsLeft)) {
+
+      let isOpponentKingInCheck = this.checkIsOpponentKingIsInCheck();
 
       this.gameOverText = isOpponentKingInCheck ? this.currentPlayer : 'S';
 
@@ -199,6 +204,22 @@ export class AppComponent implements OnInit {
         }
       })
     }
+  }
+
+  checkIfOnlyKingsLeft() {
+    let totalPiece = 0;
+
+    for (let i = 0; i < this.boardConfiguration.length; i++) {
+
+      if (this.boardConfiguration[i].unicode !== '') {
+        totalPiece++;
+      }
+
+      if (totalPiece > 2) break;
+    }
+
+
+    return totalPiece === 2 ? true : false;
   }
 
   checkIsOpponentKingIsInCheck() {
