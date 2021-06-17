@@ -60,7 +60,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   botTurn() {
 
-    let optimalMove = this.minimax.findBestMove(this.boardConfiguration, 3, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex);
+    let optimalMove = this.minimax.findBestMove(this.boardConfiguration, 4, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex);
 
     this.updateBoard(optimalMove[0], optimalMove[1]);
 
