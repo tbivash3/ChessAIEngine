@@ -12,14 +12,14 @@ export class Minimax {
 
     findBestMove(board: Piece[], depth: number, maximizingPlayer: string, blackKingIndex: number, whiteKingIndex: number) {
 
-        this.minimax(board, depth, true, maximizingPlayer, blackKingIndex, whiteKingIndex, true);
+        this.minimax(board, depth, true, maximizingPlayer, blackKingIndex, whiteKingIndex, true, -1000, 1000);
 
         return this.optimalMove;
     }
 
-    minimax(board: Piece[], depth: number, isMaximizingPlayer: boolean, maximizingPlayer: string, blackKingIndex: number, whiteKingIndex: number, mainCall: boolean): number {
+    minimax(board: Piece[], depth: number, isMaximizingPlayer: boolean, maximizingPlayer: string, blackKingIndex: number, whiteKingIndex: number, mainCall: boolean, alpha: number, beta: number): number {
 
-        if (depth === 0) return this.getStaticBoardValue(board, maximizingPlayer, blackKingIndex, whiteKingIndex);
+        if (depth === 0) return this.getStaticBoardValue(board, maximizingPlayer);
 
         if (isMaximizingPlayer) {
 
@@ -54,7 +54,12 @@ export class Minimax {
 
                         this.movesUtil.mockMove(i, currentMove, board);
 
-                        const score = this.minimax(board, depth - 1, false, maximizingPlayer, blackKingIndex, whiteKingIndex, false);
+                        const score = this.minimax(board, depth - 1, false, maximizingPlayer, blackKingIndex, whiteKingIndex, false, alpha, beta);
+
+                        board[i] = originalSource;
+                        board[currentMove] = originalDestination;
+                        blackKingIndex = originalBlackKingIndex;
+                        whiteKingIndex = originalWhiteKingIndex;
 
                         if (score > maxScore) {
                             maxScore = score;
@@ -63,10 +68,9 @@ export class Minimax {
                                 this.optimalMove = [i, currentMove];
                         }
 
-                        board[i] = originalSource;
-                        board[currentMove] = originalDestination;
-                        blackKingIndex = originalBlackKingIndex;
-                        whiteKingIndex = originalWhiteKingIndex;
+                        alpha = Math.max(alpha, score);
+
+                        if (beta <= alpha) break;
                     }
                 }
 
@@ -109,19 +113,22 @@ export class Minimax {
 
                         this.movesUtil.mockMove(i, currentMove, board);
 
-                        const score = this.minimax(board, depth - 1, true, maximizingPlayer, blackKingIndex, whiteKingIndex, false);
-
-                        if (score < minScore) {
-                            minScore = score;
-                        }
+                        const score = this.minimax(board, depth - 1, true, maximizingPlayer, blackKingIndex, whiteKingIndex, false, alpha, beta);
 
                         board[i] = originalSource;
                         board[currentMove] = originalDestination;
                         blackKingIndex = originalBlackKingIndex;
                         whiteKingIndex = originalWhiteKingIndex;
+
+                        if (score < minScore) {
+                            minScore = score;
+                        }
+
+                        beta = Math.min(beta, score);
+
+                        if (beta <= alpha) break;
                     }
                 }
-
             }
 
             return minScore;
@@ -129,7 +136,7 @@ export class Minimax {
 
     }
 
-    getStaticBoardValue(board: Piece[], currentPlayer: string, blackKingIndex: number, whiteKingIndex: number): number {
+    getStaticBoardValue(board: Piece[], currentPlayer: string): number {
 
         let value = 0;
 
@@ -137,20 +144,15 @@ export class Minimax {
 
             if (board[i].unicode !== '') {
 
-                let totalMoves = this.movesUtil.getValidMoves(i, board[i].color, blackKingIndex, whiteKingIndex, board);
+                let totalMoves = this.movesUtil.getIndividualPieceMoves(i, board);
 
                 if (currentPlayer === board[i].color) {
                     value = value + board[i].value + totalMoves.length;
                 } else {
                     value = value - board[i].value - totalMoves.length;
                 }
-
             }
-
         }
         return value;
-
-
     }
-
 }

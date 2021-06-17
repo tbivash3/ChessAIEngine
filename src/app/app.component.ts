@@ -62,33 +62,9 @@ export class AppComponent implements AfterViewInit, OnInit {
 
     await new Promise((r) => setTimeout(r, 100));
 
-    let optimalMove = this.minimax.findBestMove(this.boardConfiguration, 3, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex);
+    let optimalMove = this.minimax.findBestMove(this.boardConfiguration, 5, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex);
 
     this.updateBoard(optimalMove[0], optimalMove[1]);
-
-    // let allBlackIndex: number[] = [];
-
-    // for (let i = 0; i < this.boardConfiguration.length; i++) {
-    //   if (this.boardConfiguration[i].color === Constants.PIECE_COLOR_BLACK) {
-    //     allBlackIndex.push(i);
-    //   }
-    // }
-
-    // let sourceIndex = Math.floor(Math.random() * allBlackIndex.length);
-
-    // sourceIndex = allBlackIndex[sourceIndex];
-
-    // let moves = this.movesUtil.getValidMoves(sourceIndex, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex, this.boardConfiguration);
-
-    // if (moves.length !== 0) {
-
-    //   let destinationIndex = this.findDestinationIndex(moves);
-
-    //   this.updateBoard(sourceIndex, destinationIndex);
-
-    // } else {
-    //   this.botTurn();
-    // }
   }
 
   findDestinationIndex(moves: number[]) {
