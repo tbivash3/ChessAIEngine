@@ -57,7 +57,9 @@ export class AppComponent implements OnInit {
     this.botTurn();
   }
 
-  botTurn() {
+  async botTurn() {
+
+    await new Promise((r) => setTimeout(r, 0));
 
     let allBlackIndex: number[] = [];
 
@@ -164,9 +166,6 @@ export class AppComponent implements OnInit {
   }
 
   checkIfGameOver() {
-
-    console.log(this.boardConfiguration);
-
     let noOpponentMovesLeft = true;
 
     const opponentPlayer = this.currentPlayer === Constants.PLAYER_ONE ? Constants.PLAYER_TWO : Constants.PLAYER_ONE;
