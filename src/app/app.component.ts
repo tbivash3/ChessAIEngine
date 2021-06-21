@@ -59,7 +59,7 @@ export class AppComponent implements OnInit {
 
     await new Promise((r) => setTimeout(r, 100));
 
-    let optimalMove = this.minimax.findBestMove(this.boardConfiguration, 4, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex);
+    let optimalMove = this.minimax.findBestMove(this.boardConfiguration, 5, this.currentPlayer, this.blackKingIndex, this.whiteKingIndex);
 
     this.updateBoard(optimalMove[0], optimalMove[1]);
   }

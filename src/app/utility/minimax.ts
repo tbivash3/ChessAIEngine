@@ -70,7 +70,7 @@ export class Minimax {
 
                         alpha = Math.max(alpha, score);
 
-                        if (beta <= alpha) break;
+                        if (beta <= alpha) return maxScore;
                     }
                 }
 
@@ -126,7 +126,7 @@ export class Minimax {
 
                         beta = Math.min(beta, score);
 
-                        if (beta <= alpha) break;
+                        if (beta <= alpha) return minScore;
                     }
                 }
             }
