@@ -131,10 +131,14 @@ export class AppComponent implements OnInit {
 
   pieceClick(index: number) {
 
-    this.executeMove(index);
-
-    this.selectPiece(index);
-
+    if (this.boardConfiguration[index].color === this.currentPlayer) {
+      this.selectPiece(index);
+    } else if (this.checkIfDestinationIndexIsValid(index)) {
+      this.executeMove(index);
+      this.resetLastMove();
+    } else {
+      this.resetLastMove();
+    }
   }
 
   updateBoard(sourceIndex: number, destinationIndex: number) {
